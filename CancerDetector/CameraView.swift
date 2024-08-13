@@ -3,6 +3,7 @@
 //  CancerDetector
 //
 //  Created by Prathyush Yeturi on 8/13/24.
+//  Made using code made by Alfian Losari on 6/25/22.
 //
 
 import SwiftUI
