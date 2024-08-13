@@ -16,18 +16,20 @@ struct ContentView: View {
                     Image(systemName: "chart.bar")
                     Text("Stats")
                 }
-
-            HostedCameraViewController()
-                .safeAreaInset(edge: .bottom, alignment: .center, spacing: 0) {
+            
+            VStack {
+                CameraView()
+                    .safeAreaInset(edge: .bottom, alignment: .center, spacing: 0) {
                         Color.clear
                             .frame(height: 0)
                             .background(Material.bar)
                     }
-                .ignoresSafeArea(.all, edges: .top)
-                .tabItem {
-                    Image(systemName: "camera")
-                    Text("Camera")
-                }
+                    .ignoresSafeArea(.all, edges: .top)
+            }
+            .tabItem {
+                Image(systemName: "camera")
+                Text("Camera")
+            }
             
             HistoryView()
                 .tabItem {
