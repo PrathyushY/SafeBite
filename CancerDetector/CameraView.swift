@@ -41,7 +41,7 @@ struct CameraView: View {
                 Spacer()
                 
                 bottomContainerView
-                    .background(.ultraThinMaterial)
+                    .background(.clear)
                     .frame(maxWidth: .infinity)
                     .frame(height: UIScreen.main.bounds.height * 0.35) // Height of scanning information
                     .clipped()
@@ -53,42 +53,16 @@ struct CameraView: View {
         }
     }
     
-    private var bottomHeaderView: some View {
+    private var bottomContainerView: some View {
         VStack {
             Picker("Scan Type", selection: $vm.scanType) {
                 Text("Barcode").tag(ScanType.barcode)
                 Text("Text").tag(ScanType.text)
             }
             .pickerStyle(.segmented)
-            .padding(.top)
             .padding(.leading, 30)
             .padding(.trailing, 30)
-            
-            Text(vm.headerText).padding(.top)
-        }
-        .padding(.horizontal)
-    }
-    
-    private var bottomContainerView: some View {
-        VStack {
-            bottomHeaderView
-            ScrollView {
-                LazyVStack(alignment: .leading, spacing: 16) {
-                    ForEach(vm.recognizedItems) { item in
-                        switch item {
-                        case .barcode(let barcode):
-                            Text(barcode.payloadStringValue ?? "Unknown barcode")
-                            
-                        case .text(let text):
-                            Text(text.transcript)
-                            
-                        @unknown default:
-                            Text("Unknown")
-                        }
-                    }
-                }
-                .padding()
-            }
+            .padding(.horizontal)
         }
     }
 }
