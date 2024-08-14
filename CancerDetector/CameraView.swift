@@ -32,7 +32,23 @@ struct CameraView: View {
             DataScannerView(
                 recognizedItems: $vm.recognizedItems,
                 recognizedDataType: vm.recognizedDataType,
-                recognizesMultipleItems: vm.recognizesMultipleItems)
+                recognizesMultipleItems: vm.recognizesMultipleItems,
+                onScan: { result in
+                    // Ensure scanType is barcode
+                    if vm.scanType == .barcode {
+                        // Iterate over recognized items
+                        for item in result {
+                            // Check if the item is a barcode
+                            if case let .barcode(barcode) = item {
+                                // Fetch product info with the barcode payload
+                                vm.fetchProductInfo(barcode: barcode.payloadStringValue ?? "")
+                                // Exit the loop after processing the first barcode (if needed)
+                                break
+                            }
+                        }
+                    }
+                }
+            )
             .background { Color.gray.opacity(0.3) }
             .ignoresSafeArea()
             .id(vm.dataScannerViewId)
@@ -49,7 +65,7 @@ struct CameraView: View {
             .edgesIgnoringSafeArea(.bottom)
             .onChange(of: vm.scanType) { _ in vm.recognizedItems = [] }
             .onChange(of: vm.textContentType) { _ in vm.recognizedItems = [] }
-            .onChange(of: vm.recognizesMultipleItems) { _ in vm.recognizedItems = []}
+            .onChange(of: vm.recognizesMultipleItems) { _ in vm.recognizedItems = [] }
         }
     }
     
