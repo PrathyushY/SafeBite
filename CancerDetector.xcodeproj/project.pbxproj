@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7D203CD02C6D443D000F830E /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D203CCF2C6D443D000F830E /* AppViewModel.swift */; };
+		7D203CD22C6D814D000F830E /* NutritionInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D203CD12C6D814D000F830E /* NutritionInfoView.swift */; };
+		7D203CD42C6D8F85000F830E /* DataScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D203CD32C6D8F85000F830E /* DataScannerView.swift */; };
 		7D775DF42C67C876004E4C7F /* CancerDetectorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D775DF32C67C876004E4C7F /* CancerDetectorApp.swift */; };
 		7D775DF62C67C876004E4C7F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D775DF52C67C876004E4C7F /* ContentView.swift */; };
 		7D775DFA2C67C877004E4C7F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7D775DF92C67C877004E4C7F /* Assets.xcassets */; };
@@ -17,8 +20,6 @@
 		7D775E222C67CA39004E4C7F /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D775E212C67CA39004E4C7F /* HistoryView.swift */; };
 		7D775E242C67CA72004E4C7F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D775E232C67CA72004E4C7F /* SettingsView.swift */; };
 		7D775E262C67CB31004E4C7F /* StatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D775E252C67CB31004E4C7F /* StatisticsView.swift */; };
-		7DC9ED682C6BE01900FA6F52 /* DataScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DC9ED662C6BE01900FA6F52 /* DataScannerView.swift */; };
-		7DC9ED692C6BE01900FA6F52 /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DC9ED672C6BE01900FA6F52 /* AppViewModel.swift */; };
 		7DC9ED6B2C6BE29E00FA6F52 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DC9ED6A2C6BE29E00FA6F52 /* CameraView.swift */; };
 /* End PBXBuildFile section */
 
@@ -40,6 +41,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7D203CCF2C6D443D000F830E /* AppViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppViewModel.swift; sourceTree = "<group>"; };
+		7D203CD12C6D814D000F830E /* NutritionInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutritionInfoView.swift; sourceTree = "<group>"; };
+		7D203CD32C6D8F85000F830E /* DataScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataScannerView.swift; sourceTree = "<group>"; };
 		7D26B0532C685A3100BB3814 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		7D775DF02C67C876004E4C7F /* CancerDetector.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CancerDetector.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D775DF32C67C876004E4C7F /* CancerDetectorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancerDetectorApp.swift; sourceTree = "<group>"; };
@@ -54,8 +58,6 @@
 		7D775E212C67CA39004E4C7F /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		7D775E232C67CA72004E4C7F /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		7D775E252C67CB31004E4C7F /* StatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
-		7DC9ED662C6BE01900FA6F52 /* DataScannerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataScannerView.swift; path = ../../BarcodeTextScannerSwiftUI/BarcodeTextScanner/DataScannerView.swift; sourceTree = "<group>"; };
-		7DC9ED672C6BE01900FA6F52 /* AppViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppViewModel.swift; path = ../../BarcodeTextScannerSwiftUI/BarcodeTextScanner/AppViewModel.swift; sourceTree = "<group>"; };
 		7DC9ED6A2C6BE29E00FA6F52 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -111,8 +113,9 @@
 				7D775DF32C67C876004E4C7F /* CancerDetectorApp.swift */,
 				7D775DF52C67C876004E4C7F /* ContentView.swift */,
 				7DC9ED6A2C6BE29E00FA6F52 /* CameraView.swift */,
-				7DC9ED672C6BE01900FA6F52 /* AppViewModel.swift */,
-				7DC9ED662C6BE01900FA6F52 /* DataScannerView.swift */,
+				7D203CD32C6D8F85000F830E /* DataScannerView.swift */,
+				7D203CCF2C6D443D000F830E /* AppViewModel.swift */,
+				7D203CD12C6D814D000F830E /* NutritionInfoView.swift */,
 				7D775E232C67CA72004E4C7F /* SettingsView.swift */,
 				7D775E252C67CB31004E4C7F /* StatisticsView.swift */,
 				7D775E212C67CA39004E4C7F /* HistoryView.swift */,
@@ -235,6 +238,9 @@
 				Base,
 			);
 			mainGroup = 7D775DE72C67C876004E4C7F;
+			packageReferences = (
+				7D203CC42C6C42A2000F830E /* XCRemoteSwiftPackageReference "PythonKit" */,
+			);
 			productRefGroup = 7D775DF12C67C876004E4C7F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -279,11 +285,12 @@
 			files = (
 				7D775E242C67CA72004E4C7F /* SettingsView.swift in Sources */,
 				7D775E262C67CB31004E4C7F /* StatisticsView.swift in Sources */,
-				7DC9ED692C6BE01900FA6F52 /* AppViewModel.swift in Sources */,
+				7D203CD02C6D443D000F830E /* AppViewModel.swift in Sources */,
 				7D775DF62C67C876004E4C7F /* ContentView.swift in Sources */,
+				7D203CD42C6D8F85000F830E /* DataScannerView.swift in Sources */,
 				7D775E222C67CA39004E4C7F /* HistoryView.swift in Sources */,
 				7D775DF42C67C876004E4C7F /* CancerDetectorApp.swift in Sources */,
-				7DC9ED682C6BE01900FA6F52 /* DataScannerView.swift in Sources */,
+				7D203CD22C6D814D000F830E /* NutritionInfoView.swift in Sources */,
 				7DC9ED6B2C6BE29E00FA6F52 /* CameraView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -457,8 +464,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -466,6 +472,9 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.prathyeturi.CancerDetector;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -489,8 +498,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -498,6 +506,9 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.prathyeturi.CancerDetector;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -616,6 +627,17 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		7D203CC42C6C42A2000F830E /* XCRemoteSwiftPackageReference "PythonKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pvieito/PythonKit.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
 	};
 	rootObject = 7D775DE82C67C876004E4C7F /* Project object */;
 }

@@ -32,16 +32,39 @@ struct CameraView: View {
             DataScannerView(
                 recognizedItems: $vm.recognizedItems,
                 recognizedDataType: vm.recognizedDataType,
-                recognizesMultipleItems: vm.recognizesMultipleItems)
-            .background { Color.gray.opacity(0.3) }
-            .ignoresSafeArea()
-            .id(vm.dataScannerViewId)
+                recognizesMultipleItems: vm.recognizesMultipleItems,
+                onScan: { result in
+                    // Ensure scanType is barcode
+                    if vm.scanType == .barcode {
+                        // Iterate over recognized items
+                        for item in result {
+                            // Check if the item is a barcode
+                            if case let .barcode(barcode) = item {
+                                // Fetch product info with the barcode payload
+                                vm.fetchProductInfo(barcode: barcode.payloadStringValue ?? "")
+                                // Exit the loop after processing the first barcode (if needed)
+                                break
+                             }
+                         }
+                     }
+                 }
+             )
+             .background { Color.gray.opacity(0.3) }
+             .ignoresSafeArea()
+             .id(vm.dataScannerViewId)
+             .sheet(isPresented: $vm.showNutritionInfo) {
+                 // TODO: Make scrollable if not already, maybe through a ScrollablePane (idk what it's rally caleed look at barcode app I think it's there)
+                 if let productInfo = vm.productInfo {
+                     productInfo
+                         .presentationDragIndicator(.visible)
+                 }
+             }
             
             VStack {
                 Spacer()
                 
                 bottomContainerView
-                    .background(.ultraThinMaterial)
+                    .background(.clear)
                     .frame(maxWidth: .infinity)
                     .frame(height: UIScreen.main.bounds.height * 0.35) // Height of scanning information
                     .clipped()
@@ -49,46 +72,20 @@ struct CameraView: View {
             .edgesIgnoringSafeArea(.bottom)
             .onChange(of: vm.scanType) { _ in vm.recognizedItems = [] }
             .onChange(of: vm.textContentType) { _ in vm.recognizedItems = [] }
-            .onChange(of: vm.recognizesMultipleItems) { _ in vm.recognizedItems = []}
+            .onChange(of: vm.recognizesMultipleItems) { _ in vm.recognizedItems = [] }
         }
     }
     
-    private var bottomHeaderView: some View {
+    private var bottomContainerView: some View {
         VStack {
             Picker("Scan Type", selection: $vm.scanType) {
                 Text("Barcode").tag(ScanType.barcode)
                 Text("Text").tag(ScanType.text)
             }
             .pickerStyle(.segmented)
-            .padding(.top)
             .padding(.leading, 30)
             .padding(.trailing, 30)
-            
-            Text(vm.headerText).padding(.top)
-        }
-        .padding(.horizontal)
-    }
-    
-    private var bottomContainerView: some View {
-        VStack {
-            bottomHeaderView
-            ScrollView {
-                LazyVStack(alignment: .leading, spacing: 16) {
-                    ForEach(vm.recognizedItems) { item in
-                        switch item {
-                        case .barcode(let barcode):
-                            Text(barcode.payloadStringValue ?? "Unknown barcode")
-                            
-                        case .text(let text):
-                            Text(text.transcript)
-                            
-                        @unknown default:
-                            Text("Unknown")
-                        }
-                    }
-                }
-                .padding()
-            }
+            .padding(.horizontal)
         }
     }
 }
