@@ -2,8 +2,8 @@
 //  AppViewModel.swift
 //  BarcodeTextScanner
 //
-//  Created by Alfian Losari on 6/25/22.
-//  Modified for use on this project by Prathyush Yeturi on 8/13/2024
+//  Created by Prathyush Yeturi on 8/13/24.
+//  Made using code made by Alfian Losari on 6/25/22.
 //
 
 import AVKit
@@ -31,7 +31,9 @@ final class AppViewModel: ObservableObject {
     @Published var scanType: ScanType = .barcode
     @Published var textContentType: DataScannerViewController.TextContentType?
     @Published var recognizesMultipleItems = true
-    
+    @Published var showNutritionInfo = false
+    @Published var productInfo: NutritionInfoView?
+
     public func fetchProductInfo(barcode: String) {
         let baseURL = "https://world.openfoodfacts.org/api/v0/product/"
         guard let url = URL(string: "\(baseURL)\(barcode).json") else {
@@ -55,15 +57,16 @@ final class AppViewModel: ObservableObject {
                     if let status = json["status"] as? Int, status == 1 {
                         if let product = json["product"] as? [String: Any] {
                             DispatchQueue.main.async {
-                                // Handle the product information as needed
-                                print("Product Information:")
-                                print("With Additives: \(product["with_additives"] as? String ?? "N/A")")
-                                print("Name: \(product["product_name"] as? String ?? "N/A")")
-                                print("Brand: \(product["brands"] as? String ?? "N/A")")
-                                print("Quantity: \(product["quantity"] as? String ?? "N/A")")
-                                print("Ingredients: \(product["ingredients_text"] as? String ?? "N/A")")
-                                print("Nutrition Score: \(product["nutriscore_score"] as? Int ?? -1)")
-                                print("Image URL: \(product["image_url"] as? String ?? "N/A")")
+                                self.productInfo = NutritionInfoView(
+                                    withAdditives: product["with_additives"] as? String ?? "N/A",
+                                    name: product["product_name"] as? String ?? "N/A",
+                                    brand: product["brands"] as? String ?? "N/A",
+                                    quantity: product["quantity"] as? String ?? "N/A",
+                                    ingredients: product["ingredients_text"] as? String ?? "N/A",
+                                    nutritionScore: product["nutriscore_score"] as? Int ?? -1,
+                                    imageURL: product["image_url"] as? String ?? "N/A"
+                                )
+                                self.showNutritionInfo = true
                             }
                         }
                     } else {

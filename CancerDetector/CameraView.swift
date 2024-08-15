@@ -44,14 +44,21 @@ struct CameraView: View {
                                 vm.fetchProductInfo(barcode: barcode.payloadStringValue ?? "")
                                 // Exit the loop after processing the first barcode (if needed)
                                 break
-                            }
-                        }
-                    }
-                }
-            )
-            .background { Color.gray.opacity(0.3) }
-            .ignoresSafeArea()
-            .id(vm.dataScannerViewId)
+                             }
+                         }
+                     }
+                 }
+             )
+             .background { Color.gray.opacity(0.3) }
+             .ignoresSafeArea()
+             .id(vm.dataScannerViewId)
+             .sheet(isPresented: $vm.showNutritionInfo) {
+                 // TODO: Make scrollable if not already, maybe through a ScrollablePane (idk what it's rally caleed look at barcode app I think it's there)
+                 if let productInfo = vm.productInfo {
+                     productInfo
+                         .presentationDragIndicator(.visible)
+                 }
+             }
             
             VStack {
                 Spacer()
