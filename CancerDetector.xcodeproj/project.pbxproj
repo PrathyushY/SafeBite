@@ -113,9 +113,12 @@
 				7D775DF32C67C876004E4C7F /* CancerDetectorApp.swift */,
 				7D775DF52C67C876004E4C7F /* ContentView.swift */,
 				7DC9ED6A2C6BE29E00FA6F52 /* CameraView.swift */,
+<<<<<<< Updated upstream
 				7D203CD32C6D8F85000F830E /* DataScannerView.swift */,
 				7D203CCF2C6D443D000F830E /* AppViewModel.swift */,
 				7D203CD12C6D814D000F830E /* NutritionInfoView.swift */,
+=======
+>>>>>>> Stashed changes
 				7D775E232C67CA72004E4C7F /* SettingsView.swift */,
 				7D775E252C67CB31004E4C7F /* StatisticsView.swift */,
 				7D775E212C67CA39004E4C7F /* HistoryView.swift */,
