@@ -11,19 +11,33 @@ import VisionKit
 
 struct CameraView: View {
     @EnvironmentObject var vm: AppViewModel
+    @Environment(\.modelContext) private var modelContext
+    
+    @State private var productInfoView: NutritionInfoView?
     
     var body: some View {
-        switch vm.dataScannerAccessStatus {
-        case .scannerAvailable:
-            mainView
-        case .cameraNotAvailable:
-            Text("Your device doesn't have a camera")
-        case .scannerNotAvailable:
-            Text("Your device doesn't have support for scanning barcode with this app")
-        case .cameraAccessNotGranted:
-            Text("Please provide access to the camera in settings")
-        case .notDetermined:
-            Text("Requesting camera access")
+        NavigationView {
+            switch vm.dataScannerAccessStatus {
+            case .scannerAvailable:
+                mainView
+            case .cameraNotAvailable:
+                Text("Your device doesn't have a camera")
+            case .scannerNotAvailable:
+                Text("Your device doesn't have support for scanning barcode with this app")
+            case .cameraAccessNotGranted:
+                Text("Please provide access to the camera in settings")
+            case .notDetermined:
+                Text("Requesting camera access")
+            }
+        }
+        .navigationTitle("Camera")
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: showInfo) {
+                    Image(systemName: "info.circle")
+                        .imageScale(.large)
+                }
+            }
         }
     }
     
@@ -41,24 +55,33 @@ struct CameraView: View {
                             // Check if the item is a barcode
                             if case let .barcode(barcode) = item {
                                 // Fetch product info with the barcode payload
-                                vm.fetchProductInfo(barcode: barcode.payloadStringValue ?? "")
-                                // Exit the loop after processing the first barcode (if needed)
+                                vm.fetchProductInfo(barcode: barcode.payloadStringValue ?? "", modelContext: modelContext) { newProduct in
+                                    // Ensure newProduct is not nil
+                                    if let product = newProduct {
+                                        productInfoView = NutritionInfoView(product: product)
+                                        modelContext.insert(product)
+                                        do {
+                                            try modelContext.save()
+                                        } catch {
+                                            print("Failed to save context: \(error.localizedDescription)")
+                                        }
+                                    }
+                                }
                                 break
-                             }
-                         }
-                     }
-                 }
-             )
-             .background { Color.gray.opacity(0.3) }
-             .ignoresSafeArea()
-             .id(vm.dataScannerViewId)
-             .sheet(isPresented: $vm.showNutritionInfo) {
-                 // TODO: Make scrollable if not already, maybe through a ScrollablePane (idk what it's rally caleed look at barcode app I think it's there)
-                 if let productInfo = vm.productInfo {
-                     productInfo
-                         .presentationDragIndicator(.visible)
-                 }
-             }
+                            }
+                        }
+                    }
+                }
+            )
+            .background { Color.gray.opacity(0.3) }
+            .ignoresSafeArea()
+            .id(vm.dataScannerViewId)
+            .sheet(isPresented: $vm.showNutritionInfo) {
+                if let productInfoView = productInfoView {
+                    productInfoView
+                        .presentationDragIndicator(.visible)
+                }
+            }
             
             VStack {
                 Spacer()
@@ -70,10 +93,20 @@ struct CameraView: View {
                     .clipped()
             }
             .edgesIgnoringSafeArea(.bottom)
-            .onChange(of: vm.scanType) { _ in vm.recognizedItems = [] }
-            .onChange(of: vm.textContentType) { _ in vm.recognizedItems = [] }
-            .onChange(of: vm.recognizesMultipleItems) { _ in vm.recognizedItems = [] }
+            .onChange(of: vm.scanType) { newValue, _ in
+                vm.recognizedItems = []
+            }
+            .onChange(of: vm.textContentType) { newValue, _ in
+                vm.recognizedItems = []
+            }
+            .onChange(of: vm.recognizesMultipleItems) { newValue, _ in
+                vm.recognizedItems = []
+            }
         }
+    }
+    
+    private func showInfo() {
+        print("Info button tapped")
     }
     
     private var bottomContainerView: some View {
