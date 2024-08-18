@@ -9,9 +9,12 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
+    @StateObject private var vm = AppViewModel()
+    
     var body: some View {
         TabView {
             StatisticsView()
+                .environmentObject(vm)
                 .tabItem {
                     Image(systemName: "chart.bar")
                     Text("Stats")
@@ -19,6 +22,7 @@ struct ContentView: View {
             
             VStack {
                 CameraView()
+                    .environmentObject(vm)
                     .safeAreaInset(edge: .bottom, alignment: .center, spacing: 0) {
                         Color.clear
                             .frame(height: 0)
@@ -32,6 +36,8 @@ struct ContentView: View {
             }
             
             HistoryView()
+                .environmentObject(vm)
+                .modelContainer(for: Product.self)
                 .tabItem {
                     Image(systemName: "clock")
                         .foregroundColor(.red)
@@ -39,14 +45,17 @@ struct ContentView: View {
                 }
             
             SettingsView()
+                .environmentObject(vm)
                 .tabItem {
                     Image(systemName: "gearshape")
                     Text("Settings")
                 }
         }
+        .modelContainer(for: Product.self, inMemory: false)
     }
 }
 
 #Preview {
     ContentView()
+        .modelContainer(for: Product.self, inMemory: false)
 }

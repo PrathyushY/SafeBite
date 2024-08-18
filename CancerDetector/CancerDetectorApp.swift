@@ -16,6 +16,7 @@ struct CancerDetectorApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(vm)
+                .modelContainer(for: Product.self)
                 .task {
                     await vm.requestDataScannerAccessStatus()
                 }

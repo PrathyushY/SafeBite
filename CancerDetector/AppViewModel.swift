@@ -9,6 +9,7 @@
 import AVKit
 import Foundation
 import SwiftUI
+import SwiftData
 import VisionKit
 
 enum ScanType: String {
@@ -25,56 +26,63 @@ enum DataScannerAccessStatusType {
 
 @MainActor
 final class AppViewModel: ObservableObject {
-    
     @Published var dataScannerAccessStatus: DataScannerAccessStatusType = .notDetermined
     @Published var recognizedItems: [RecognizedItem] = []
     @Published var scanType: ScanType = .barcode
     @Published var textContentType: DataScannerViewController.TextContentType?
     @Published var recognizesMultipleItems = true
     @Published var showNutritionInfo = false
-    @Published var productInfo: NutritionInfoView?
-
-    public func fetchProductInfo(barcode: String) {
+    
+    public func fetchProductInfo(barcode: String, modelContext: ModelContext, completion: @escaping (Product?) -> Void) {
         let baseURL = "https://world.openfoodfacts.org/api/v0/product/"
         guard let url = URL(string: "\(baseURL)\(barcode).json") else {
             print("Invalid URL")
+            completion(nil)
             return
         }
         
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
             if let error = error {
                 print("Failed to retrieve data: \(error.localizedDescription)")
+                completion(nil)
                 return
             }
             
             guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200, let data = data else {
                 print("Failed to retrieve data. Status code: \((response as? HTTPURLResponse)?.statusCode ?? 0)")
+                completion(nil)
                 return
             }
             
             do {
-                if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-                    if let status = json["status"] as? Int, status == 1 {
-                        if let product = json["product"] as? [String: Any] {
-                            DispatchQueue.main.async {
-                                self.productInfo = NutritionInfoView(
-                                    withAdditives: product["with_additives"] as? String ?? "N/A",
-                                    name: product["product_name"] as? String ?? "N/A",
-                                    brand: product["brands"] as? String ?? "N/A",
-                                    quantity: product["quantity"] as? String ?? "N/A",
-                                    ingredients: product["ingredients_text"] as? String ?? "N/A",
-                                    nutritionScore: product["nutriscore_score"] as? Int ?? -1,
-                                    imageURL: product["image_url"] as? String ?? "N/A"
-                                )
-                                self.showNutritionInfo = true
-                            }
-                        }
-                    } else {
-                        print("Product not found.")
+                if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                   let status = json["status"] as? Int, status == 1,
+                   let product = json["product"] as? [String: Any] {
+                    let newProduct = Product(
+                        withAdditives: product["with_additives"] as? String ?? "N/A",
+                        name: product["product_name"] as? String ?? "N/A",
+                        brand: product["brands"] as? String ?? "N/A",
+                        quantity: product["quantity"] as? String ?? "N/A",
+                        ingredients: product["ingredients_text"] as? String ?? "N/A",
+                        nutritionScore: product["nutriscore_score"] as? Int ?? -1,
+                        imageURL: product["image_url"] as? String ?? "N/A"
+                    )
+                    
+                    DispatchQueue.main.async {
+                        self.showNutritionInfo = true
+                        completion(newProduct)
+                    }
+                } else {
+                    print("Product not found.")
+                    DispatchQueue.main.async {
+                        completion(nil)
                     }
                 }
             } catch {
                 print("Failed to parse JSON: \(error.localizedDescription)")
+                DispatchQueue.main.async {
+                    completion(nil)
+                }
             }
         }
         
@@ -93,7 +101,7 @@ final class AppViewModel: ObservableObject {
         }
     }
     
-      var dataScannerViewId: Int {
+    var dataScannerViewId: Int {
         var hasher = Hasher()
         hasher.combine(scanType)
         hasher.combine(recognizesMultipleItems)
@@ -128,7 +136,7 @@ final class AppViewModel: ObservableObject {
             } else {
                 dataScannerAccessStatus = .cameraAccessNotGranted
             }
-        
+            
         default: break
             
         }
