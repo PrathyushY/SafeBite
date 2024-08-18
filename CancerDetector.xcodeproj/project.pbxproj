@@ -284,12 +284,18 @@
 			files = (
 				7D775E242C67CA72004E4C7F /* SettingsView.swift in Sources */,
 				7D775E262C67CB31004E4C7F /* StatisticsView.swift in Sources */,
+<<<<<<< Updated upstream
 				7D203CD02C6D443D000F830E /* AppViewModel.swift in Sources */,
+=======
+>>>>>>> Stashed changes
 				7D775DF62C67C876004E4C7F /* ContentView.swift in Sources */,
 				7D203CD42C6D8F85000F830E /* DataScannerView.swift in Sources */,
 				7D775E222C67CA39004E4C7F /* HistoryView.swift in Sources */,
 				7D775DF42C67C876004E4C7F /* CancerDetectorApp.swift in Sources */,
+<<<<<<< Updated upstream
 				7D203CD22C6D814D000F830E /* NutritionInfoView.swift in Sources */,
+=======
+>>>>>>> Stashed changes
 				7DC9ED6B2C6BE29E00FA6F52 /* CameraView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
