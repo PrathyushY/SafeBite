@@ -30,6 +30,9 @@ struct CameraView: View {
                 Text("Requesting camera access")
             }
         }
+        .task {
+            await vm.requestDataScannerAccessStatus()
+        }
         .navigationTitle("Camera")
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
