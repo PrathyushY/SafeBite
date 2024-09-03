@@ -10,6 +10,7 @@
 		7D203CD02C6D443D000F830E /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D203CCF2C6D443D000F830E /* AppViewModel.swift */; };
 		7D203CD22C6D814D000F830E /* NutritionInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D203CD12C6D814D000F830E /* NutritionInfoView.swift */; };
 		7D203CD42C6D8F85000F830E /* DataScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D203CD32C6D8F85000F830E /* DataScannerView.swift */; };
+		7D768FA12C878343006CAA42 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7D768F9F2C878342006CAA42 /* Model.xcdatamodeld */; };
 		7D775DF42C67C876004E4C7F /* CancerDetectorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D775DF32C67C876004E4C7F /* CancerDetectorApp.swift */; };
 		7D775DF62C67C876004E4C7F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D775DF52C67C876004E4C7F /* ContentView.swift */; };
 		7D775DFA2C67C877004E4C7F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7D775DF92C67C877004E4C7F /* Assets.xcassets */; };
@@ -48,6 +49,7 @@
 		7D203CD12C6D814D000F830E /* NutritionInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutritionInfoView.swift; sourceTree = "<group>"; };
 		7D203CD32C6D8F85000F830E /* DataScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataScannerView.swift; sourceTree = "<group>"; };
 		7D26B0532C685A3100BB3814 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		7D768FA02C878342006CAA42 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		7D775DF02C67C876004E4C7F /* CancerDetector.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CancerDetector.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D775DF32C67C876004E4C7F /* CancerDetectorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancerDetectorApp.swift; sourceTree = "<group>"; };
 		7D775DF52C67C876004E4C7F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -95,6 +97,7 @@
 		7D775DE72C67C876004E4C7F = {
 			isa = PBXGroup;
 			children = (
+				7D768F9F2C878342006CAA42 /* Model.xcdatamodeld */,
 				7D775DF22C67C876004E4C7F /* CancerDetector */,
 				7D775E052C67C877004E4C7F /* CancerDetectorTests */,
 				7D775E0F2C67C877004E4C7F /* CancerDetectorUITests */,
@@ -302,6 +305,7 @@
 				7D9645E82C6EABEB00E61BCF /* Product.swift in Sources */,
 				7D8717D12C7F506900F1CA8B /* ChatMessage.swift in Sources */,
 				7D203CD22C6D814D000F830E /* NutritionInfoView.swift in Sources */,
+				7D768FA12C878343006CAA42 /* Model.xcdatamodeld in Sources */,
 				7DC9ED6B2C6BE29E00FA6F52 /* CameraView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -640,6 +644,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		7D768F9F2C878342006CAA42 /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				7D768FA02C878342006CAA42 /* Model.xcdatamodel */,
+			);
+			currentVersion = 7D768FA02C878342006CAA42 /* Model.xcdatamodel */;
+			path = Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 7D775DE82C67C876004E4C7F /* Project object */;
 }
