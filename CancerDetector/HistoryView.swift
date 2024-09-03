@@ -10,7 +10,7 @@ import SwiftData
 
 struct HistoryView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query() private var products: [Product]
+    @Query(sort: \Product.timeScanned, order: .reverse) private var products: [Product]
 
     var body: some View {
         NavigationSplitView {

@@ -40,22 +40,22 @@ struct ContentView: View {
                 .modelContainer(for: Product.self)
                 .tabItem {
                     Image(systemName: "clock")
-                        .foregroundColor(.red)
                     Text("History")
                 }
             
-            SettingsView()
+            ChatView()
                 .environmentObject(vm)
+                .modelContainer(for: [Product.self, ChatMessage.self])
                 .tabItem {
-                    Image(systemName: "gearshape")
-                    Text("Settings")
+                    Image(systemName: "message.fill")
+                    Text("Chat")
                 }
         }
-        .modelContainer(for: Product.self, inMemory: false)
+        .modelContainer(for: [Product.self, ChatMessage.self])
     }
 }
 
 #Preview {
     ContentView()
-        .modelContainer(for: Product.self, inMemory: false)
+        .modelContainer(for: [Product.self, ChatMessage.self], inMemory: false)
 }

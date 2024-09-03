@@ -13,8 +13,8 @@ struct CameraView: View {
     @EnvironmentObject var vm: AppViewModel
     @Environment(\.modelContext) private var modelContext
     
-    @State private var productInfoView: NutritionInfoView?
-    
+    @State private var productInfoView: NutritionInfoView? = nil
+
     var body: some View {
         NavigationView {
             switch vm.dataScannerAccessStatus {
@@ -42,6 +42,12 @@ struct CameraView: View {
                 }
             }
         }
+        .sheet(isPresented: $vm.showNutritionInfo) {
+            if let productInfoView = productInfoView {
+                productInfoView
+                    .presentationDragIndicator(.visible)
+            }
+        }
     }
     
     private var mainView: some View {
@@ -51,41 +57,13 @@ struct CameraView: View {
                 recognizedDataType: vm.recognizedDataType,
                 recognizesMultipleItems: vm.recognizesMultipleItems,
                 onScan: { result in
-                    // Ensure scanType is barcode
-                    if vm.scanType == .barcode {
-                        // Iterate over recognized items
-                        for item in result {
-                            // Check if the item is a barcode
-                            if case let .barcode(barcode) = item {
-                                // Fetch product info with the barcode payload
-                                vm.fetchProductInfo(barcode: barcode.payloadStringValue ?? "", modelContext: modelContext) { newProduct in
-                                    // Ensure newProduct is not nil
-                                    if let product = newProduct {
-                                        productInfoView = NutritionInfoView(product: product)
-                                        modelContext.insert(product)
-                                        do {
-                                            try modelContext.save()
-                                        } catch {
-                                            print("Failed to save context: \(error.localizedDescription)")
-                                        }
-                                    }
-                                }
-                                break
-                            }
-                        }
-                    }
+                    handleScan(result)
                 }
             )
             .background { Color.gray.opacity(0.3) }
             .ignoresSafeArea()
             .id(vm.dataScannerViewId)
-            .sheet(isPresented: $vm.showNutritionInfo) {
-                if let productInfoView = productInfoView {
-                    productInfoView
-                        .presentationDragIndicator(.visible)
-                }
-            }
-            
+
             VStack {
                 Spacer()
                 
@@ -107,11 +85,40 @@ struct CameraView: View {
             }
         }
     }
-    
+
+    private func handleScan(_ result: [RecognizedItem]) {
+        // Ensure scanType is barcode
+        if vm.scanType == .barcode {
+            // Iterate over recognized items
+            for item in result {
+                // Check if the item is a barcode
+                if case let .barcode(barcode) = item {
+                    // Fetch product info with the barcode payload
+                    vm.fetchProductInfo(barcode: barcode.payloadStringValue ?? "", modelContext: modelContext) { newProduct in
+                        // Ensure newProduct is not nil
+                        if let product = newProduct {
+                            DispatchQueue.main.async {
+                                self.productInfoView = NutritionInfoView(product: product)
+                                vm.showNutritionInfo = true  // Ensure this state is toggled to present the sheet
+                                modelContext.insert(product)
+                                do {
+                                    try modelContext.save()
+                                } catch {
+                                    print("Failed to save context: \(error.localizedDescription)")
+                                }
+                            }
+                        }
+                    }
+                    break
+                }
+            }
+        }
+    }
+
     private func showInfo() {
         print("Info button tapped")
     }
-    
+
     private var bottomContainerView: some View {
         VStack {
             Picker("Scan Type", selection: $vm.scanType) {

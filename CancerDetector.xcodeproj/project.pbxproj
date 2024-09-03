@@ -18,8 +18,10 @@
 		7D775E112C67C877004E4C7F /* CancerDetectorUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D775E102C67C877004E4C7F /* CancerDetectorUITests.swift */; };
 		7D775E132C67C877004E4C7F /* CancerDetectorUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D775E122C67C877004E4C7F /* CancerDetectorUITestsLaunchTests.swift */; };
 		7D775E222C67CA39004E4C7F /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D775E212C67CA39004E4C7F /* HistoryView.swift */; };
-		7D775E242C67CA72004E4C7F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D775E232C67CA72004E4C7F /* SettingsView.swift */; };
+		7D775E242C67CA72004E4C7F /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D775E232C67CA72004E4C7F /* ChatView.swift */; };
 		7D775E262C67CB31004E4C7F /* StatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D775E252C67CB31004E4C7F /* StatisticsView.swift */; };
+		7D8717D12C7F506900F1CA8B /* ChatMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D8717D02C7F506900F1CA8B /* ChatMessage.swift */; };
+		7D8E88BF2C78C6DA00D3C338 /* AIController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D8E88BE2C78C6DA00D3C338 /* AIController.swift */; };
 		7D9645E82C6EABEB00E61BCF /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D9645E72C6EABEB00E61BCF /* Product.swift */; };
 		7DC9ED6B2C6BE29E00FA6F52 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DC9ED6A2C6BE29E00FA6F52 /* CameraView.swift */; };
 /* End PBXBuildFile section */
@@ -57,8 +59,10 @@
 		7D775E102C67C877004E4C7F /* CancerDetectorUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancerDetectorUITests.swift; sourceTree = "<group>"; };
 		7D775E122C67C877004E4C7F /* CancerDetectorUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancerDetectorUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		7D775E212C67CA39004E4C7F /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
-		7D775E232C67CA72004E4C7F /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		7D775E232C67CA72004E4C7F /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		7D775E252C67CB31004E4C7F /* StatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
+		7D8717D02C7F506900F1CA8B /* ChatMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessage.swift; sourceTree = "<group>"; };
+		7D8E88BE2C78C6DA00D3C338 /* AIController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIController.swift; sourceTree = "<group>"; };
 		7D9645E72C6EABEB00E61BCF /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
 		7DC9ED6A2C6BE29E00FA6F52 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -117,9 +121,11 @@
 				7DC9ED6A2C6BE29E00FA6F52 /* CameraView.swift */,
 				7D203CD32C6D8F85000F830E /* DataScannerView.swift */,
 				7D203CCF2C6D443D000F830E /* AppViewModel.swift */,
+				7D8E88BE2C78C6DA00D3C338 /* AIController.swift */,
 				7D9645E72C6EABEB00E61BCF /* Product.swift */,
 				7D203CD12C6D814D000F830E /* NutritionInfoView.swift */,
-				7D775E232C67CA72004E4C7F /* SettingsView.swift */,
+				7D775E232C67CA72004E4C7F /* ChatView.swift */,
+				7D8717D02C7F506900F1CA8B /* ChatMessage.swift */,
 				7D775E252C67CB31004E4C7F /* StatisticsView.swift */,
 				7D775E212C67CA39004E4C7F /* HistoryView.swift */,
 				7D775DF92C67C877004E4C7F /* Assets.xcassets */,
@@ -285,14 +291,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7D775E242C67CA72004E4C7F /* SettingsView.swift in Sources */,
+				7D775E242C67CA72004E4C7F /* ChatView.swift in Sources */,
 				7D775E262C67CB31004E4C7F /* StatisticsView.swift in Sources */,
 				7D203CD02C6D443D000F830E /* AppViewModel.swift in Sources */,
 				7D775DF62C67C876004E4C7F /* ContentView.swift in Sources */,
 				7D203CD42C6D8F85000F830E /* DataScannerView.swift in Sources */,
+				7D8E88BF2C78C6DA00D3C338 /* AIController.swift in Sources */,
 				7D775E222C67CA39004E4C7F /* HistoryView.swift in Sources */,
 				7D775DF42C67C876004E4C7F /* CancerDetectorApp.swift in Sources */,
 				7D9645E82C6EABEB00E61BCF /* Product.swift in Sources */,
+				7D8717D12C7F506900F1CA8B /* ChatMessage.swift in Sources */,
 				7D203CD22C6D814D000F830E /* NutritionInfoView.swift in Sources */,
 				7DC9ED6B2C6BE29E00FA6F52 /* CameraView.swift in Sources */,
 			);
@@ -474,7 +482,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.prathyeturi.CancerDetector;
+				PRODUCT_BUNDLE_IDENTIFIER = com.prathyeturi.CancerDetectorApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -509,7 +517,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.prathyeturi.CancerDetector;
+				PRODUCT_BUNDLE_IDENTIFIER = com.prathyeturi.CancerDetectorApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

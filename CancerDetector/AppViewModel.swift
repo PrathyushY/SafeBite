@@ -41,48 +41,61 @@ final class AppViewModel: ObservableObject {
             return
         }
         
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+        let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+            guard let self = self else { return }
+            
             if let error = error {
                 print("Failed to retrieve data: \(error.localizedDescription)")
-                completion(nil)
+                DispatchQueue.main.async { completion(nil) }
                 return
             }
             
             guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200, let data = data else {
                 print("Failed to retrieve data. Status code: \((response as? HTTPURLResponse)?.statusCode ?? 0)")
-                completion(nil)
+                DispatchQueue.main.async { completion(nil) }
                 return
             }
             
             do {
                 if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
                    let status = json["status"] as? Int, status == 1,
-                   let product = json["product"] as? [String: Any] {
-                    let newProduct = Product(
-                        withAdditives: product["with_additives"] as? String ?? "N/A",
-                        name: product["product_name"] as? String ?? "N/A",
-                        brand: product["brands"] as? String ?? "N/A",
-                        quantity: product["quantity"] as? String ?? "N/A",
-                        ingredients: product["ingredients_text"] as? String ?? "N/A",
-                        nutritionScore: product["nutriscore_score"] as? Int ?? -1,
-                        imageURL: product["image_url"] as? String ?? "N/A"
-                    )
+                   let productJson = json["product"] as? [String: Any] {
                     
-                    DispatchQueue.main.async {
-                        self.showNutritionInfo = true
-                        completion(newProduct)
+                    let jsonData = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
+                    let jsonString = String(data: jsonData, encoding: .utf8) ?? "Error converting JSON to String"
+                    
+                    Task {
+                        if let summary = await getAISummary(jsonString: jsonString) {
+                            let newProduct = Product(
+                                withAdditives: productJson["with_additives"] as? String ?? "N/A",
+                                name: productJson["product_name"] as? String ?? "N/A",
+                                brand: productJson["brands"] as? String ?? "N/A",
+                                quantity: productJson["quantity"] as? String ?? "N/A",
+                                ingredients: productJson["ingredients_text"] as? String ?? "N/A",
+                                nutritionScore: productJson["nutriscore_score"] as? Int ?? -1,
+                                imageURL: productJson["image_url"] as? String ?? "N/A",
+                                summary: summary,
+                                timeScanned: Date()
+                            )
+                            
+                            DispatchQueue.main.async {
+                                self.showNutritionInfo = true
+                                completion(newProduct)
+                            }
+                        } else {
+                            DispatchQueue.main.async {
+                                print("Failed to generate summary.")
+                                completion(nil)
+                            }
+                        }
                     }
                 } else {
                     print("Product not found.")
-                    DispatchQueue.main.async {
-                        completion(nil)
-                    }
+                    DispatchQueue.main.async { completion(nil) }
                 }
             } catch {
                 print("Failed to parse JSON: \(error.localizedDescription)")
-                DispatchQueue.main.async {
-                    completion(nil)
-                }
+                DispatchQueue.main.async { completion(nil) }
             }
         }
         
@@ -122,7 +135,6 @@ final class AppViewModel: ObservableObject {
         }
         
         switch AVCaptureDevice.authorizationStatus(for: .video) {
-            
         case .authorized:
             dataScannerAccessStatus = isScannerAvailable ? .scannerAvailable : .scannerNotAvailable
             
@@ -138,7 +150,6 @@ final class AppViewModel: ObservableObject {
             }
             
         default: break
-            
         }
     }
 }
