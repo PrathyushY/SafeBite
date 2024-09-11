@@ -73,6 +73,10 @@ final class AppViewModel: ObservableObject {
                                 quantity: productJson["quantity"] as? String ?? "N/A",
                                 ingredients: productJson["ingredients_text"] as? String ?? "N/A",
                                 nutritionScore: productJson["nutriscore_score"] as? Int ?? -1,
+                                ecoScore: productJson["eco_score"] as? Int ?? -1, // Assuming you might have this field
+                                foodProcessingRating: productJson["food_processing_rating"] as? String ?? "N/A", // New property
+                                allergens: productJson["allergens"] as? [String] ?? [], // New property
+                                ingredientsAnalysis: productJson["ingredients_analysis"] as? String ?? "N/A", // New property
                                 imageURL: productJson["image_url"] as? String ?? "N/A",
                                 summary: summary,
                                 timeScanned: Date()

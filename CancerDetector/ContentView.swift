@@ -7,10 +7,8 @@
 
 import SwiftUI
 import SwiftData
-
 struct ContentView: View {
     @StateObject private var vm = AppViewModel()
-    
     var body: some View {
         TabView {
             StatisticsView()
@@ -37,7 +35,6 @@ struct ContentView: View {
             
             HistoryView()
                 .environmentObject(vm)
-                .modelContainer(for: Product.self)
                 .tabItem {
                     Image(systemName: "clock")
                     Text("History")
@@ -45,7 +42,6 @@ struct ContentView: View {
             
             ChatView()
                 .environmentObject(vm)
-                .modelContainer(for: [Product.self, ChatMessage.self])
                 .tabItem {
                     Image(systemName: "message.fill")
                     Text("Chat")

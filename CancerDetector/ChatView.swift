@@ -17,7 +17,8 @@ struct ChatView: View {
     @State private var userMessage: String = ""
     @State private var aiResponse: String = "Type a message and press 'Send' to start."
     @State private var products: [Product] = []
-    @State private var isLoading: Bool = false
+    @State private var isGeneratingResponse: Bool = false // Tracks if AI is generating a response
+    
     @Query(sort: \ChatMessage.timestamp, order: .forward) private var chatMessages: [ChatMessage]
     
     var body: some View {
@@ -36,18 +37,36 @@ struct ChatView: View {
                                         .foregroundColor(.white)
                                         .cornerRadius(10)
                                 } else {
-                                    Text(message.content)
-                                        .padding()
-                                        .background(Color(.secondarySystemBackground))
-                                        .cornerRadius(10)
-                                    Spacer()
+                                    if message.content == "idle message" {
+                                        ProgressView()
+                                            .padding()
+                                            .background(Color(.secondarySystemBackground))
+                                            .cornerRadius(10)
+                                        Spacer()
+                                    } else {
+                                        Text(message.content)
+                                            .padding()
+                                            .background(Color(.secondarySystemBackground))
+                                            .cornerRadius(10)
+                                        Spacer()
+                                    }
                                 }
                             }
                         }
                     }
                     .padding(.horizontal)
                 }
+                .safeAreaInset(edge: .top, alignment: .center, spacing: 0) {
+                    Color.clear
+                        .frame(height: 0)
+                        .background(Material.bar)
+                }
                 .onChange(of: chatMessages.count) {
+                    if let lastMessage = chatMessages.last {
+                        proxy.scrollTo(lastMessage.id, anchor: .bottom)
+                    }
+                }
+                .onAppear {
                     if let lastMessage = chatMessages.last {
                         proxy.scrollTo(lastMessage.id, anchor: .bottom)
                     }
@@ -66,25 +85,22 @@ struct ChatView: View {
                 })
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding(.horizontal)
+                .disabled(isGeneratingResponse)
                 
                 // Dynamic button: Show ProgressView when loading, otherwise show send button
-                if isLoading {
-                    ProgressView()
-                        .padding(.trailing, 10)
-                } else {
-                    Button(action: {
-                        Task {
-                            await sendChatRequest()
-                        }
-                    }) {
-                        Image(systemName: "paperplane.fill")
-                            .foregroundStyle(.white)
-                            .padding(7)
-                            .background(Color.red)
-                            .cornerRadius(5)
+                Button(action: {
+                    Task {
+                        await sendChatRequest()
                     }
-                    .padding(.trailing, 10)
+                }) {
+                    Image(systemName: "paperplane.fill")
+                        .foregroundStyle(.white)
+                        .padding(7)
+                        .background(isGeneratingResponse ? Color.gray : Color.red) // Gray when disabled
+                        .cornerRadius(5)
                 }
+                .padding(.trailing, 10)
+                .disabled(isGeneratingResponse) // Disable button when AI is generating
             }
             .padding(.bottom)
         }
@@ -106,7 +122,7 @@ struct ChatView: View {
     
     // Function to handle sending the chat request to the AI
     private func sendChatRequest() async {
-        guard !userMessage.isEmpty else {
+        if userMessage.isEmpty {
             let aiChatMessage = ChatMessage(content: "Please enter a message before sending", sender: "ai")
             modelContext.insert(aiChatMessage)
             return
@@ -116,8 +132,21 @@ struct ChatView: View {
         let userChatMessage = ChatMessage(content: userMessage, sender: "user")
         modelContext.insert(userChatMessage)
         
-        // Set loading state to true
-        isLoading = true
+        // Disable further input while generating response
+        isGeneratingResponse = true
+        
+        // Ensure that the idle message is unique for every request
+        let idleMessage = ChatMessage(content: "idle message", sender: "ai")
+        
+        // Insert the idle chat message after the user message
+        modelContext.insert(idleMessage)
+        
+        // Save context to update UI with the idle message
+        do {
+            try modelContext.save()
+        } catch {
+            print("Failed to save context: \(error.localizedDescription)")
+        }
         
         // Fetch AI summary based on user message and fetched products
         if let aiResponseText = await chatBasedOnHistory(message: userMessage, products: products) {
@@ -128,21 +157,13 @@ struct ChatView: View {
             modelContext.insert(aiChatMessage)
         }
         
-        do {
-            try modelContext.save()
-        } catch {
-            print("Failed to save context: \(error.localizedDescription)")
-        }
+        // Re-enable input after AI response is generated
+        isGeneratingResponse = false
         
         // Clear the text field after sending the message
         userMessage = ""
         
-        // Reset loading state
-        isLoading = false
-        
-        print("Number of messages: \(chatMessages.count)")
-        for message in chatMessages {
-            print("Message: \(message.content), Sender: \(message.sender)")
-        }
+        // Remove the idle message
+        modelContext.delete(idleMessage)
     }
 }

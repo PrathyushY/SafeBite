@@ -77,11 +77,11 @@ func chatBasedOnHistory(message: String, products: [Product]) async -> String? {
             "messages": [
                 [
                     "role": "system",
-                    "content": message
+                    "content": "This is information on what the user has eaten in the past: \(foodHistoryJSONString). Answer questions with this context in mind. Keep in mind that this is an app where the user can scan products and view their nutritional value. They can also keep a log of what they have eaten and see how many calories they have eaten this week and how much sugar they have eaten in the past week. You are an assistant in this app to the user, giving them tips and advice about what they are eating and helping them with any questions they have. Try to keep your answers short and concise."
                 ],
                 [
                     "role": "user",
-                    "content": "This is information on what I have eaten in the past: \(foodHistoryJSONString). \n\nKeep in mind that this is an app where the user can scan products and view their nutritional value. They can also keep a log of what they have eaten and see how many calories they have eaten this week and how much sugar they have eaten in the past week. Try to reccomend the user to use different parts of the app."
+                    "content": message
                 ]
             ],
             "return_citations": true
@@ -121,5 +121,55 @@ func chatBasedOnHistory(message: String, products: [Product]) async -> String? {
         print("Error during the request or data fetching: \(error.localizedDescription)")
     }
 
+    return nil
+}
+
+func getInfoAboutIngredients(ingredients: [String]) async -> [String]? {
+    // Create a prompt that lists each ingredient and asks for a summary
+    let ingredientsText = ingredients.joined(separator: ", ")
+    let prompt = "For each of the following ingredients, generate a two-sentence summary of what the ingredient does and whether it is cancerous: \(ingredientsText)."
+
+    let parameters = [
+      "model": "llama-3.1-sonar-small-128k-online",
+      "messages": [
+        [
+          "role": "user",
+          "content": prompt
+        ]
+      ],
+      "return_citations": false
+    ] as [String : Any?]
+
+    do {
+        let postData = try JSONSerialization.data(withJSONObject: parameters, options: [])
+        let url = URL(string: "https://api.perplexity.ai/chat/completions")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.timeoutInterval = 30
+        request.allHTTPHeaderFields = [
+            "accept": "application/json",
+            "content-type": "application/json",
+            "authorization": "Bearer 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"
+        ]
+        request.httpBody = postData
+
+        let (data, _) = try await URLSession.shared.data(for: request)
+        
+        // Parse the JSON response to extract the generated summary
+        if let responseJson = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+           let choices = responseJson["choices"] as? [[String: Any]],
+           let message = choices.first?["message"] as? [String: Any],
+           let content = message["content"] as? String {
+            
+            // Split the content into separate responses for each ingredient
+            let summaries = content.split(separator: "\n").map { String($0).trimmingCharacters(in: .whitespacesAndNewlines) }
+            
+            // Return an array of summaries
+            return summaries
+        }
+    } catch {
+        print("Error during the request: \(error.localizedDescription)")
+    }
+    
     return nil
 }
