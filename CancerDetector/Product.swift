@@ -21,8 +21,8 @@ final class Product {
     var allergens: [String] // Added allergens
     var ingredientsAnalysis: String // Added ingredientsAnalysis
     var imageURL: String
-    var summary: String
     var timeScanned: Date
+    var aiGeneratedInfo: [String] = []
     
     init(
         withAdditives: String,
@@ -36,7 +36,6 @@ final class Product {
         allergens: [String], // Added allergens
         ingredientsAnalysis: String, // Added ingredientsAnalysis
         imageURL: String,
-        summary: String,
         timeScanned: Date
     ) {
         self.withAdditives = withAdditives
@@ -50,7 +49,16 @@ final class Product {
         self.allergens = allergens // Initialize allergens
         self.ingredientsAnalysis = ingredientsAnalysis // Initialize ingredientsAnalysis
         self.imageURL = imageURL
-        self.summary = summary
         self.timeScanned = timeScanned
+    }
+    
+    // Fetch AI-generated information for ingredients
+    func fetchAIInfo() async {
+        let ingredientList = self.ingredients.split(separator: ",").map { String($0).trimmingCharacters(in: .whitespacesAndNewlines) }
+        if let generatedInfo = await getInfoAboutIngredients(ingredients: ingredientList) {
+            aiGeneratedInfo = generatedInfo
+        } else {
+            aiGeneratedInfo = [] // No info returned
+        }
     }
 }

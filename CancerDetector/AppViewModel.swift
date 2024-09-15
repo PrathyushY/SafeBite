@@ -65,32 +65,31 @@ final class AppViewModel: ObservableObject {
                     let jsonString = String(data: jsonData, encoding: .utf8) ?? "Error converting JSON to String"
                     
                     Task {
-                        if let summary = await getAISummary(jsonString: jsonString) {
-                            let newProduct = Product(
-                                withAdditives: productJson["with_additives"] as? String ?? "N/A",
-                                name: productJson["product_name"] as? String ?? "N/A",
-                                brand: productJson["brands"] as? String ?? "N/A",
-                                quantity: productJson["quantity"] as? String ?? "N/A",
-                                ingredients: productJson["ingredients_text"] as? String ?? "N/A",
-                                nutritionScore: productJson["nutriscore_score"] as? Int ?? -1,
-                                ecoScore: productJson["eco_score"] as? Int ?? -1, // Assuming you might have this field
-                                foodProcessingRating: productJson["food_processing_rating"] as? String ?? "N/A", // New property
-                                allergens: productJson["allergens"] as? [String] ?? [], // New property
-                                ingredientsAnalysis: productJson["ingredients_analysis"] as? String ?? "N/A", // New property
-                                imageURL: productJson["image_url"] as? String ?? "N/A",
-                                summary: summary,
-                                timeScanned: Date()
-                            )
-                            
-                            DispatchQueue.main.async {
-                                self.showNutritionInfo = true
-                                completion(newProduct)
+                        let foodProcessingRating: String = {
+                            if let novaGroupsTags = productJson["nova_groups_tags"] as? [String], !novaGroupsTags.isEmpty {
+                                return novaGroupsTags[0] // Return the first item if available
                             }
-                        } else {
-                            DispatchQueue.main.async {
-                                print("Failed to generate summary.")
-                                completion(nil)
-                            }
+                            return "N/A" // Default if no valid data is found
+                        }()
+                        
+                        let newProduct = Product(
+                            withAdditives: productJson["additives_tags"] as? String ?? "N/A",
+                            name: productJson["product_name"] as? String ?? "N/A",
+                            brand: productJson["brands"] as? String ?? "N/A",
+                            quantity: productJson["quantity"] as? String ?? "N/A",
+                            ingredients: productJson["ingredients_text"] as? String ?? "N/A",
+                            nutritionScore: productJson["nutriscore_score"] as? Int ?? -1,
+                            ecoScore: productJson["ecoscore_score"] as? Int ?? -1, // Assuming you might have this field
+                            foodProcessingRating: foodProcessingRating, // New property
+                            allergens: productJson["allergens"] as? [String] ?? [], // New property
+                            ingredientsAnalysis: productJson["ingredients_analysis"] as? String ?? "N/A", // New property
+                            imageURL: productJson["image_url"] as? String ?? "N/A",
+                            timeScanned: Date()
+                        )
+                        
+                        DispatchQueue.main.async {
+                            self.showNutritionInfo = true
+                            completion(newProduct)
                         }
                     }
                 } else {

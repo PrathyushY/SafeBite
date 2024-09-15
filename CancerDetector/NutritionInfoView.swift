@@ -2,7 +2,6 @@ import SwiftUI
 
 struct NutritionInfoView: View {
     let product: Product
-    @State private var aiGeneratedInfo: [String] = [] // Stores AI-generated ingredient info
     @State private var isLoading = true // Tracks whether AI info is loading
     
     var body: some View {
@@ -32,8 +31,11 @@ struct NutritionInfoView: View {
                 }
                 
                 // Nutrition Score in Circular View
-                ScoreCircleView(score: product.nutritionScore, label: "Nutrition Score")
-                    .padding(.vertical, 20)
+                HStack {
+                    ScoreCircleView(score: product.nutritionScore, label: "Nutrition Score")
+                        .padding()
+                    ScoreCircleView(score: product.ecoScore, label: "Eco Score")
+                }
                 
                 // Time Scanned Section
                 HStack {
@@ -49,12 +51,10 @@ struct NutritionInfoView: View {
                 
                 // Product details
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("With Additives: \(product.withAdditives)")
                     Text("Name: \(product.name)")
                     Text("Brand: \(product.brand)")
                     Text("Quantity: \(product.quantity)")
-                    Text("Ingredients: \(product.ingredients)")
-                    Text("Food Processing Rating: \(product.foodProcessingRating)")
+                    Text("With Additives: \(product.withAdditives)")
                     Text("Possible Allergens: \(product.allergens.joined(separator: ", "))")
                     Text("Ingredients Analysis: \(product.ingredientsAnalysis)")
                     Text("Image URL: \(product.imageURL)")
@@ -70,12 +70,14 @@ struct NutritionInfoView: View {
                         .font(.headline)
                         .padding(.bottom, 5)
                     
+                    let aiGeneratedInfo = product.aiGeneratedInfo
+                    
                     if isLoading {
                         ProgressView("Fetching AI-generated info...")
                             .padding()
                     } else if !aiGeneratedInfo.isEmpty {
                         ForEach(product.ingredients.split(separator: ",").map { String($0).trimmingCharacters(in: .whitespacesAndNewlines) }, id: \.self) { ingredient in
-                            if let index = product.ingredients.split(separator: ",").map { String($0).trimmingCharacters(in: .whitespacesAndNewlines) }.firstIndex(of: ingredient),
+                            if let index = product.ingredients.split(separator: ",").map({ String($0).trimmingCharacters(in: .whitespacesAndNewlines) }).firstIndex(of: ingredient),
                                index < aiGeneratedInfo.count {
                                 // Displaying ingredient and AI-generated info in two columns
                                 HStack {
@@ -103,7 +105,13 @@ struct NutritionInfoView: View {
         }
         .onAppear {
             Task {
-                await fetchAIInfo()
+                if product.aiGeneratedInfo.isEmpty {
+                    isLoading = true
+                    await product.fetchAIInfo() // Ensure this method is implemented in your Product model
+                    isLoading = false
+                } else {
+                    isLoading = false
+                }
             }
         }
     }
@@ -114,17 +122,6 @@ struct NutritionInfoView: View {
         formatter.dateStyle = .medium // Format like: Sep 10, 2024
         formatter.timeStyle = .short  // Format like: 3:45 PM
         return formatter.string(from: date)
-    }
-    
-    // Fetch AI-generated information for ingredients
-    func fetchAIInfo() async {
-        let ingredientList = product.ingredients.split(separator: ",").map { String($0).trimmingCharacters(in: .whitespacesAndNewlines) }
-        if let generatedInfo = await getInfoAboutIngredients(ingredients: ingredientList) {
-            aiGeneratedInfo = generatedInfo
-        } else {
-            aiGeneratedInfo = [] // No info returned
-        }
-        isLoading = false
     }
 }
 
@@ -163,6 +160,7 @@ struct ScoreCircleView: View {
     }
 }
 
+// Preview the view
 #Preview {
     NutritionInfoView(product: Product(
         withAdditives: "No",
@@ -176,7 +174,6 @@ struct ScoreCircleView: View {
         allergens: ["None"],
         ingredientsAnalysis: "Contains sugar and salt, minimal processing",
         imageURL: "https://www.applesfromny.com/wp-content/uploads/2020/05/20Ounce_NYAS-Apples2.png",
-        summary: "Sample summary",
         timeScanned: Date()
     ))
 }
