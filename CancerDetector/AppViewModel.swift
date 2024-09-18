@@ -62,7 +62,7 @@ final class AppViewModel: ObservableObject {
                    let productJson = json["product"] as? [String: Any] {
                     
                     let jsonData = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
-                    let jsonString = String(data: jsonData, encoding: .utf8) ?? "Error converting JSON to String"
+                    _ = String(data: jsonData, encoding: .utf8) ?? "Error converting JSON to String"
                     
                     Task {
                         let foodProcessingRating: String = {

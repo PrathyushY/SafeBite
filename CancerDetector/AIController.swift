@@ -45,6 +45,8 @@ func chatBasedOnHistory(message: String, products: [Product]) async -> String? {
           - Engage in general conversation, but always be ready to link back to nutrition topics.
           - Keep responses concise but informative.
           - If asked about specific products not in the history, provide general information and suggest scanning the product for accurate details.
+          Additional Requests
+          - Please do not bold any text. Just output raw text.
           """
         ],
         [
