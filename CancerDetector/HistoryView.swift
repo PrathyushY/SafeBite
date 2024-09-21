@@ -51,11 +51,11 @@ struct HistoryView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     EditButton()
                 }
-//                ToolbarItem {
-//                    Button("Add Test Product") {
-//                        addTestProduct()
-//                    }
-//                }
+                ToolbarItem {
+                    Button("Add Test Product") {
+                        populateProducts()
+                    }
+                }
             }
         } detail: {
             Text("Select a product")
@@ -76,6 +76,51 @@ struct HistoryView: View {
 //        modelContext.insert(newProduct)
 //        try? modelContext.save()
 //    }
+    
+    func populateProducts() {
+        let sampleProducts = [
+            Product(
+                withAdditives: "Yes",
+                name: "Apple",
+                brand: "Fresh Farms",
+                quantity: "1 kg",
+                ingredients: "Apples",
+                nutritionScore: 5,
+                ecoScore: 4,
+                foodProcessingRating: "Minimal Processing",
+                allergens: [],
+                ingredientsAnalysis: "Whole fruit, rich in vitamins.",
+                imageURL: "https://example.com/apple.jpg",
+                timeScanned: Calendar.current.date(byAdding: .day, value: -1, to: Date())!
+            ),
+            Product(
+                withAdditives: "No",
+                name: "Banana",
+                brand: "Tropical Fruits",
+                quantity: "1 bunch",
+                ingredients: "Bananas",
+                nutritionScore: 3,
+                ecoScore: 5,
+                foodProcessingRating: "Minimal Processing",
+                allergens: [],
+                ingredientsAnalysis: "Natural, high in potassium.",
+                imageURL: "https://example.com/banana.jpg",
+                timeScanned: Calendar.current.date(byAdding: .day, value: -2, to: Date())!
+            ),
+            // Add more products as needed
+        ]
+        
+        for product in sampleProducts {
+            modelContext.insert(product)
+        }
+        
+        // Save context if necessary
+        do {
+            try modelContext.save()
+        } catch {
+            print("Failed to save products: \(error)")
+        }
+    }
 
     private func deleteItems(offsets: IndexSet) {
         withAnimation {

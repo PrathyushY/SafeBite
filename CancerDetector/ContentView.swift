@@ -11,7 +11,7 @@ struct ContentView: View {
     @StateObject private var vm = AppViewModel()
     var body: some View {
         TabView {
-            StatisticsView()
+            StatsView()
                 .environmentObject(vm)
                 .tabItem {
                     Image(systemName: "chart.bar")
