@@ -1,20 +1,8 @@
-//
-//  AppViewModel.swift
-//  BarcodeTextScanner
-//
-//  Created by Prathyush Yeturi on 8/13/24.
-//  Made using code made by Alfian Losari on 6/25/22.
-//
-
 import AVKit
 import Foundation
 import SwiftUI
 import SwiftData
 import VisionKit
-
-enum ScanType: String {
-    case barcode, text
-}
 
 enum DataScannerAccessStatusType {
     case notDetermined
@@ -28,9 +16,6 @@ enum DataScannerAccessStatusType {
 final class AppViewModel: ObservableObject {
     @Published var dataScannerAccessStatus: DataScannerAccessStatusType = .notDetermined
     @Published var recognizedItems: [RecognizedItem] = []
-    @Published var scanType: ScanType = .barcode
-    @Published var textContentType: DataScannerViewController.TextContentType?
-    @Published var recognizesMultipleItems = true
     @Published var showNutritionInfo = false
     
     public func fetchProductInfo(barcode: String, modelContext: ModelContext, completion: @escaping (Product?) -> Void) {
@@ -61,36 +46,31 @@ final class AppViewModel: ObservableObject {
                    let status = json["status"] as? Int, status == 1,
                    let productJson = json["product"] as? [String: Any] {
                     
-                    let jsonData = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
-                    _ = String(data: jsonData, encoding: .utf8) ?? "Error converting JSON to String"
-                    
-                    Task {
-                        let foodProcessingRating: String = {
-                            if let novaGroupsTags = productJson["nova_groups_tags"] as? [String], !novaGroupsTags.isEmpty {
-                                return novaGroupsTags[0] // Return the first item if available
-                            }
-                            return "N/A" // Default if no valid data is found
-                        }()
-                        
-                        let newProduct = Product(
-                            withAdditives: productJson["additives_tags"] as? String ?? "N/A",
-                            name: productJson["product_name"] as? String ?? "N/A",
-                            brand: productJson["brands"] as? String ?? "N/A",
-                            quantity: productJson["quantity"] as? String ?? "N/A",
-                            ingredients: productJson["ingredients_text"] as? String ?? "N/A",
-                            nutritionScore: productJson["nutriscore_score"] as? Int ?? -1,
-                            ecoScore: productJson["ecoscore_score"] as? Int ?? -1, // Assuming you might have this field
-                            foodProcessingRating: foodProcessingRating, // New property
-                            allergens: productJson["allergens"] as? [String] ?? [], // New property
-                            ingredientsAnalysis: productJson["ingredients_analysis"] as? String ?? "N/A", // New property
-                            imageURL: productJson["image_url"] as? String ?? "N/A",
-                            timeScanned: Date()
-                        )
-                        
-                        DispatchQueue.main.async {
-                            self.showNutritionInfo = true
-                            completion(newProduct)
+                    let foodProcessingRating: String = {
+                        if let novaGroupsTags = productJson["nova_groups_tags"] as? [String], !novaGroupsTags.isEmpty {
+                            return novaGroupsTags[0] // Return the first item if available
                         }
+                        return "N/A" // Default if no valid data is found
+                    }()
+                    
+                    let newProduct = Product(
+                        withAdditives: productJson["additives_tags"] as? String ?? "N/A",
+                        name: productJson["product_name"] as? String ?? "N/A",
+                        brand: productJson["brands"] as? String ?? "N/A",
+                        quantity: productJson["quantity"] as? String ?? "N/A",
+                        ingredients: productJson["ingredients_text"] as? String ?? "N/A",
+                        nutritionScore: productJson["nutriscore_score"] as? Int ?? -1,
+                        ecoScore: productJson["ecoscore_score"] as? Int ?? -1, // Assuming you might have this field
+                        foodProcessingRating: foodProcessingRating,
+                        allergens: productJson["allergens"] as? [String] ?? [],
+                        ingredientsAnalysis: productJson["ingredients_analysis"] as? String ?? "N/A",
+                        imageURL: productJson["image_url"] as? String ?? "N/A",
+                        timeScanned: Date()
+                    )
+                    
+                    DispatchQueue.main.async {
+                        self.showNutritionInfo = true
+                        completion(newProduct)
                     }
                 } else {
                     print("Product not found.")
@@ -106,24 +86,19 @@ final class AppViewModel: ObservableObject {
     }
     
     var recognizedDataType: DataScannerViewController.RecognizedDataType {
-        scanType == .barcode ? .barcode() : .text(textContentType: textContentType)
+        .barcode() // Always return barcode scanner type
     }
     
     var headerText: String {
         if recognizedItems.isEmpty {
-            return "Scanning \(scanType.rawValue)"
+            return "Scanning barcodes"
         } else {
             return "Recognized \(recognizedItems.count) item(s)"
         }
     }
     
     var dataScannerViewId: Int {
-        var hasher = Hasher()
-        hasher.combine(scanType)
-        hasher.combine(recognizesMultipleItems)
-        if let textContentType {
-            hasher.combine(textContentType)
-        }
+        let hasher = Hasher()
         return hasher.finalize()
     }
     
@@ -146,11 +121,7 @@ final class AppViewModel: ObservableObject {
             
         case .notDetermined:
             let granted = await AVCaptureDevice.requestAccess(for: .video)
-            if granted {
-                dataScannerAccessStatus = isScannerAvailable ? .scannerAvailable : .scannerNotAvailable
-            } else {
-                dataScannerAccessStatus = .cameraAccessNotGranted
-            }
+            dataScannerAccessStatus = granted ? (isScannerAvailable ? .scannerAvailable : .scannerNotAvailable) : .cameraAccessNotGranted
             
         default: break
         }

@@ -19,18 +19,26 @@ struct DataScannerView: UIViewControllerRepresentable {
     
     func makeUIViewController(context: Context) -> DataScannerViewController {
         let vc = DataScannerViewController(
-            recognizedDataTypes: [recognizedDataType],
+            recognizedDataTypes: [.barcode()],
             qualityLevel: .balanced,
             recognizesMultipleItems: recognizesMultipleItems,
             isGuidanceEnabled: true,
             isHighlightingEnabled: true
         )
+        vc.delegate = context.coordinator // Ensure delegate is set
         return vc
     }
     
     func updateUIViewController(_ uiViewController: DataScannerViewController, context: Context) {
         uiViewController.delegate = context.coordinator
-        try? uiViewController.startScanning()
+        
+        if uiViewController.isScanning { return }
+        
+        do {
+            try uiViewController.startScanning()
+        } catch {
+            print("Failed to start scanning: \(error.localizedDescription)")
+        }
     }
     
     func makeCoordinator() -> Coordinator {
@@ -44,7 +52,7 @@ struct DataScannerView: UIViewControllerRepresentable {
     class Coordinator: NSObject, DataScannerViewControllerDelegate {
         
         @Binding var recognizedItems: [RecognizedItem]
-        let onScan: (([RecognizedItem]) -> Void)?  // Add this property
+        let onScan: (([RecognizedItem]) -> Void)?
         
         init(recognizedItems: Binding<[RecognizedItem]>, onScan: (([RecognizedItem]) -> Void)?) {
             self._recognizedItems = recognizedItems
@@ -52,27 +60,25 @@ struct DataScannerView: UIViewControllerRepresentable {
         }
         
         func dataScanner(_ dataScanner: DataScannerViewController, didTapOn item: RecognizedItem) {
-            print("didTapOn \(item)")
+            print("Tapped on item \(item)")
         }
         
         func dataScanner(_ dataScanner: DataScannerViewController, didAdd addedItems: [RecognizedItem], allItems: [RecognizedItem]) {
             UINotificationFeedbackGenerator().notificationOccurred(.success)
             recognizedItems.append(contentsOf: addedItems)
-            print("didAddItems \(addedItems)")
-            
-            // Handle scanning result
+            print("Added items: \(addedItems)")
             onScan?(addedItems)
         }
         
         func dataScanner(_ dataScanner: DataScannerViewController, didRemove removedItems: [RecognizedItem], allItems: [RecognizedItem]) {
-            self.recognizedItems = recognizedItems.filter { item in
-                !removedItems.contains(where: {$0.id == item.id })
+            recognizedItems = recognizedItems.filter { item in
+                !removedItems.contains { $0.id == item.id }
             }
-            print("didRemovedItems \(removedItems)")
+            print("Removed items: \(removedItems)")
         }
         
         func dataScanner(_ dataScanner: DataScannerViewController, becameUnavailableWithError error: DataScannerViewController.ScanningUnavailable) {
-            print("became unavailable with error \(error.localizedDescription)")
+            print("Scanner became unavailable: \(error.localizedDescription)")
         }
     }
 }

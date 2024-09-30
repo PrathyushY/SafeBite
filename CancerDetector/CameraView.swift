@@ -1,11 +1,3 @@
-//
-//  CameraView.swift
-//  CancerDetector
-//
-//  Created by Prathyush Yeturi on 8/13/24.
-//  Made using code made by Alfian Losari on 6/25/22.
-//
-
 import SwiftUI
 import VisionKit
 
@@ -14,55 +6,70 @@ struct CameraView: View {
     @Environment(\.modelContext) private var modelContext
     
     @State private var productInfoView: NutritionInfoView? = nil
+    @State private var scanningPaused = false // State to control scanning
 
     var body: some View {
         NavigationView {
-            switch vm.dataScannerAccessStatus {
-            case .scannerAvailable:
-                mainView
-            case .cameraNotAvailable:
-                Text("Your device doesn't have a camera")
-            case .scannerNotAvailable:
-                Text("Your device doesn't have support for scanning barcode with this app")
-            case .cameraAccessNotGranted:
-                Text("Please provide access to the camera in settings")
-            case .notDetermined:
-                Text("Requesting camera access")
-            }
-        }
-        .task {
-            await vm.requestDataScannerAccessStatus()
-        }
-        .navigationTitle("Camera")
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: showInfo) {
-                    Image(systemName: "info.circle")
-                        .imageScale(.large)
+            VStack {
+                switch vm.dataScannerAccessStatus {
+                case .scannerAvailable:
+                    mainView
+                case .cameraNotAvailable:
+                    Text("Your device doesn't have a camera")
+                case .scannerNotAvailable:
+                    Text("Your device doesn't have support for scanning barcodes with this app")
+                case .cameraAccessNotGranted:
+                    Text("Please provide access to the camera in settings")
+                case .notDetermined:
+                    Text("Requesting camera access")
                 }
             }
-        }
-        .sheet(isPresented: $vm.showNutritionInfo) {
-            if let productInfoView = productInfoView {
-                productInfoView
-                    .presentationDragIndicator(.visible)
+            .task {
+                await vm.requestDataScannerAccessStatus()
             }
+            .toolbar {
+                // Add an info button to the top-right of the toolbar
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: showInfo) {
+                        Image(systemName: "info.circle")
+                            .imageScale(.large)
+                    }
+                }
+            }
+            .sheet(isPresented: $vm.showNutritionInfo, onDismiss: {
+                // Resume scanning when the sheet is dismissed
+                scanningPaused = false
+            }) {
+                if let productInfoView = productInfoView {
+                    productInfoView
+                        .presentationDragIndicator(.visible)
+                }
+            }
+            .navigationBarTitle("Camera")
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
     
+    // Main view with the scanner
     private var mainView: some View {
         ZStack {
-            DataScannerView(
-                recognizedItems: $vm.recognizedItems,
-                recognizedDataType: vm.recognizedDataType,
-                recognizesMultipleItems: vm.recognizesMultipleItems,
-                onScan: { result in
-                    handleScan(result)
-                }
-            )
-            .background { Color.gray.opacity(0.3) }
-            .ignoresSafeArea()
-            .id(vm.dataScannerViewId)
+            if !scanningPaused {
+                DataScannerView(
+                    recognizedItems: $vm.recognizedItems,
+                    recognizedDataType: .barcode(), // Only allow barcode scanning
+                    recognizesMultipleItems: false, // Disable multiple item recognition
+                    onScan: { result in
+                        handleScan(result)
+                    }
+                )
+                .background { Color.gray.opacity(0.3) }
+                .ignoresSafeArea()
+                .id(vm.dataScannerViewId)
+            } else {
+                Text("Scanning Paused")
+                    .foregroundColor(.gray)
+                    .font(.title2)
+            }
 
             VStack {
                 Spacer()
@@ -74,61 +81,47 @@ struct CameraView: View {
                     .clipped()
             }
             .edgesIgnoringSafeArea(.bottom)
-            .onChange(of: vm.scanType) { newValue, _ in
-                vm.recognizedItems = []
-            }
-            .onChange(of: vm.textContentType) { newValue, _ in
-                vm.recognizedItems = []
-            }
-            .onChange(of: vm.recognizesMultipleItems) { newValue, _ in
-                vm.recognizedItems = []
-            }
         }
     }
 
+    // Handle barcode scan results
     private func handleScan(_ result: [RecognizedItem]) {
-        // Ensure scanType is barcode
-        if vm.scanType == .barcode {
-            // Iterate over recognized items
-            for item in result {
-                // Check if the item is a barcode
-                if case let .barcode(barcode) = item {
-                    // Fetch product info with the barcode payload
-                    vm.fetchProductInfo(barcode: barcode.payloadStringValue ?? "", modelContext: modelContext) { newProduct in
-                        // Ensure newProduct is not nil
-                        if let product = newProduct {
-                            DispatchQueue.main.async {
-                                self.productInfoView = NutritionInfoView(product: product)
-                                vm.showNutritionInfo = true  // Ensure this state is toggled to present the sheet
-                                modelContext.insert(product)
-                                do {
-                                    try modelContext.save()
-                                } catch {
-                                    print("Failed to save context: \(error.localizedDescription)")
-                                }
+        guard !scanningPaused else { return } // Ensure we stop scanning once a barcode is detected
+        
+        for item in result {
+            if case let .barcode(barcode) = item {
+                scanningPaused = true // Pause scanning after barcode is detected
+
+                vm.fetchProductInfo(barcode: barcode.payloadStringValue ?? "", modelContext: modelContext) { newProduct in
+                    if let product = newProduct {
+                        DispatchQueue.main.async {
+                            self.productInfoView = NutritionInfoView(product: product)
+                            vm.showNutritionInfo = true
+                            modelContext.insert(product)
+                            do {
+                                try modelContext.save()
+                            } catch {
+                                print("Failed to save context: \(error.localizedDescription)")
                             }
                         }
                     }
-                    break
                 }
+                break
             }
         }
     }
 
+    // Show information button action
     private func showInfo() {
         print("Info button tapped")
     }
 
+    // The bottom view with barcode scan status information
     private var bottomContainerView: some View {
         VStack {
-            Picker("Scan Type", selection: $vm.scanType) {
-                Text("Barcode").tag(ScanType.barcode)
-                Text("Text").tag(ScanType.text)
-            }
-            .pickerStyle(.segmented)
-            .padding(.leading, 30)
-            .padding(.trailing, 30)
-            .padding(.horizontal)
+            Text("Point your camera at a barcode to scan.")
+                .font(.headline)
+                .padding()
         }
     }
 }

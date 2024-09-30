@@ -7,8 +7,10 @@
 
 import SwiftUI
 import SwiftData
+
 struct ContentView: View {
     @StateObject private var vm = AppViewModel()
+    
     var body: some View {
         TabView {
             StatsView()
@@ -47,7 +49,7 @@ struct ContentView: View {
                     Text("Chat")
                 }
         }
-        .modelContainer(for: [Product.self, ChatMessage.self])
+        .modelContainer(for: [Product.self, ChatMessage.self], inMemory: false)
     }
 }
 

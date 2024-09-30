@@ -11,7 +11,7 @@ import SwiftData
 struct HistoryView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Product.timeScanned, order: .reverse) private var products: [Product]
-
+    
     var body: some View {
         NavigationSplitView {
             Group {
@@ -56,26 +56,39 @@ struct HistoryView: View {
                         populateProducts()
                     }
                 }
+                ToolbarItem {
+                    Button("Clear History") {
+                        clearHistory()
+                    }
+                }
             }
         } detail: {
             Text("Select a product")
                 .navigationTitle("Products")
         }
     }
-
-//    private func addTestProduct() {
-//        let newProduct = Product(
-//            withAdditives: "None",
-//            name: "Test Product",
-//            brand: "Test Brand",
-//            quantity: "1",
-//            ingredients: "Test Ingredients",
-//            nutritionScore: 100,
-//            imageURL: "https://example.com"
-//        )
-//        modelContext.insert(newProduct)
-//        try? modelContext.save()
-//    }
+    
+    func clearHistory() {
+        do {
+            try modelContext.delete(model: Product.self)
+        } catch {
+            print("Unable to clear history: \(error.localizedDescription)")
+        }
+    }
+    
+    //    private func addTestProduct() {
+    //        let newProduct = Product(
+    //            withAdditives: "None",
+    //            name: "Test Product",
+    //            brand: "Test Brand",
+    //            quantity: "1",
+    //            ingredients: "Test Ingredients",
+    //            nutritionScore: 100,
+    //            imageURL: "https://example.com"
+    //        )
+    //        modelContext.insert(newProduct)
+    //        try? modelContext.save()
+    //    }
     
     func populateProducts() {
         let sampleProducts = [
@@ -99,7 +112,7 @@ struct HistoryView: View {
                 brand: "Tropical Fruits",
                 quantity: "1 bunch",
                 ingredients: "Bananas",
-                nutritionScore: 3,
+                nutritionScore: 50,
                 ecoScore: 5,
                 foodProcessingRating: "Minimal Processing",
                 allergens: [],
@@ -107,7 +120,76 @@ struct HistoryView: View {
                 imageURL: "https://example.com/banana.jpg",
                 timeScanned: Calendar.current.date(byAdding: .day, value: -2, to: Date())!
             ),
-            // Add more products as needed
+            Product(
+                withAdditives: "No",
+                name: "Banana",
+                brand: "Tropical Fruits",
+                quantity: "1 bunch",
+                ingredients: "Bananas",
+                nutritionScore: 67,
+                ecoScore: 5,
+                foodProcessingRating: "Minimal Processing",
+                allergens: [],
+                ingredientsAnalysis: "Natural, high in potassium.",
+                imageURL: "https://example.com/banana.jpg",
+                timeScanned: Calendar.current.date(byAdding: .day, value: -3, to: Date())!
+            ),
+            Product(
+                withAdditives: "No",
+                name: "Banana",
+                brand: "Tropical Fruits",
+                quantity: "1 bunch",
+                ingredients: "Bananas",
+                nutritionScore: 4,
+                ecoScore: 5,
+                foodProcessingRating: "Minimal Processing",
+                allergens: [],
+                ingredientsAnalysis: "Natural, high in potassium.",
+                imageURL: "https://example.com/banana.jpg",
+                timeScanned: Calendar.current.date(byAdding: .day, value: -4, to: Date())!
+            ),
+            Product(
+                withAdditives: "No",
+                name: "Banana",
+                brand: "Tropical Fruits",
+                quantity: "1 bunch",
+                ingredients: "Bananas",
+                nutritionScore: 1,
+                ecoScore: 5,
+                foodProcessingRating: "Minimal Processing",
+                allergens: [],
+                ingredientsAnalysis: "Natural, high in potassium.",
+                imageURL: "https://example.com/banana.jpg",
+                timeScanned: Calendar.current.date(byAdding: .day, value: -5, to: Date())!
+            ),
+            Product(
+                withAdditives: "No",
+                name: "Banana",
+                brand: "Tropical Fruits",
+                quantity: "1 bunch",
+                ingredients: "Bananas",
+                nutritionScore: 4,
+                ecoScore: 5,
+                foodProcessingRating: "Minimal Processing",
+                allergens: [],
+                ingredientsAnalysis: "Natural, high in potassium.",
+                imageURL: "https://example.com/banana.jpg",
+                timeScanned: Calendar.current.date(byAdding: .day, value: -6, to: Date())!
+            ),
+            Product(
+                withAdditives: "No",
+                name: "Banana",
+                brand: "Tropical Fruits",
+                quantity: "1 bunch",
+                ingredients: "Bananas",
+                nutritionScore: 6,
+                ecoScore: 5,
+                foodProcessingRating: "Minimal Processing",
+                allergens: [],
+                ingredientsAnalysis: "Natural, high in potassium.",
+                imageURL: "https://example.com/banana.jpg",
+                timeScanned: Calendar.current.date(byAdding: .day, value: -7, to: Date())!
+            )
         ]
         
         for product in sampleProducts {
@@ -121,7 +203,7 @@ struct HistoryView: View {
             print("Failed to save products: \(error)")
         }
     }
-
+    
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
             for index in offsets {
