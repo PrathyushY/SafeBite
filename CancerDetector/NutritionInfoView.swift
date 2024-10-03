@@ -3,121 +3,187 @@ import SwiftUI
 struct NutritionInfoView: View {
     let product: Product
     @State private var isLoading = true // Tracks whether AI info is loading
+    @State private var showAlert = false // State to control alert presentation
+    @State private var alertMessage = "" // Message for the alert
     
     var body: some View {
-        ScrollView {
-            VStack(spacing: 16) {
-                // Product Information header without colon and larger size
-                Text("Product Information")
-                    .font(.largeTitle) // Increased size
-                    .bold()
-                    .padding(.bottom, 10)
-                
-                // Display the image if available
-                if let url = URL(string: product.imageURL) {
-                    AsyncImage(url: url) { image in
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(maxWidth: 200, maxHeight: 200)
-                            .cornerRadius(10)
-                    } placeholder: {
-                        ProgressView()
-                    }
-                } else {
-                    Text("Image not available")
-                        .italic()
-                        .foregroundColor(.gray)
-                }
-                
-                // Nutrition Score in Circular View
-                HStack {
-                    ScoreCircleView(score: product.nutritionScore, label: "Nutrition Score")
+        NavigationView {
+            ScrollView {
+                VStack(alignment: .center) { // Center all content
+                    productHeader // Product Information Header
+                    
+                    productImage // Display the image if available
+                    
+                    nutritionScores // Nutrition Score in Circular View
+                    
+                    timeScanned // Time Scanned Section
+                        .padding(3)
+                    
+                    productDetails // Product details
                         .padding()
-                    ScoreCircleView(score: product.ecoScore, label: "Eco Score")
-                }
-                
-                // Time Scanned Section
-                HStack {
-                    Image(systemName: "clock")
-                        .foregroundColor(.gray)
-                    Text("Time Scanned: \(formattedDate(product.timeScanned))")
-                        .font(.body)
-                        .foregroundColor(.black)
+                    
+                    ingredientSummary // Summary Section with Table
                 }
                 .padding()
-                .background(RoundedRectangle(cornerRadius: 10).stroke(Color.gray.opacity(0.5), lineWidth: 1))
-                .padding(.horizontal)
-                
-                // Product details
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("Name: \(product.name)")
-                    Text("Brand: \(product.brand)")
-                    Text("Quantity: \(product.quantity)")
-                    Text("With Additives: \(product.withAdditives)")
-                    Text("Possible Allergens: \(product.allergens.joined(separator: ", "))")
-                    Text("Ingredients Analysis: \(product.ingredientsAnalysis)")
-                    Text("Image URL: \(product.imageURL)")
-                }
-                .font(.body)
-                .padding()
-                .background(RoundedRectangle(cornerRadius: 10).stroke(Color.gray.opacity(0.5), lineWidth: 1))
-                .padding(.horizontal)
-                
-                // Summary Section with Table
-                VStack(alignment: .leading) {
-                    Text("Ingredient Summary")
-                        .font(.headline)
-                        .padding(.bottom, 5)
-                    
-                    let aiGeneratedInfo = product.aiGeneratedInfo
-                    
-                    if isLoading {
-                        ProgressView("Fetching AI-generated info...")
-                            .padding()
-                    } else if !aiGeneratedInfo.isEmpty {
-                        ForEach(product.ingredients.split(separator: ",").map { String($0).trimmingCharacters(in: .whitespacesAndNewlines) }, id: \.self) { ingredient in
-                            if let index = product.ingredients.split(separator: ",").map({ String($0).trimmingCharacters(in: .whitespacesAndNewlines) }).firstIndex(of: ingredient),
-                               index < aiGeneratedInfo.count {
-                                // Displaying ingredient and AI-generated info in two columns
-                                HStack {
-                                    Text(ingredient)
-                                        .font(.body)
-                                        .bold()
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                    Text(aiGeneratedInfo[index])
-                                        .font(.body)
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                }
-                                .padding(.vertical, 5)
-                                Divider()
-                            }
-                        }
-                    } else {
-                        Text("No AI-generated information available.")
-                            .italic()
-                            .foregroundColor(.gray)
+                .frame(maxWidth: .infinity) // Make sure content is centered
+            }
+            .navigationTitle("Product Info")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                // Add an info button to the top-right of the toolbar
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: showInfo) {
+                        Image(systemName: "info.circle")
                     }
                 }
-                .padding(.horizontal)
             }
-            .padding()
         }
         .onAppear {
-            Task {
-                if product.aiGeneratedInfo.isEmpty {
-                    isLoading = true
-                    await product.fetchAIInfo() // Ensure this method is implemented in your Product model
-                    isLoading = false
-                } else {
-                    isLoading = false
+            loadAIInfo()
+        }
+        .alert(isPresented: $showAlert) {
+            Alert(title: Text("Warning"),
+                  message: Text(alertMessage),
+                  dismissButton: .default(Text("OK")))
+        }
+        .edgesIgnoringSafeArea(.top)
+    }
+    
+    // Show information button action
+    private func showInfo() {
+        // Set the alert message and show the alert
+        alertMessage = "Be cautious when trusting AI-generated content. Always verify information from reliable sources."
+        showAlert = true
+    }
+    
+    // Product Information header
+    private var productHeader: some View {
+        Text(product.name)
+            .font(.title)
+            .bold()
+            .multilineTextAlignment(.center) // Center text
+            .padding(.bottom, 10)
+            .frame(maxWidth: .infinity, alignment: .center) // Center the header
+    }
+    
+    // Display the image if available
+    private var productImage: some View {
+        if let url = URL(string: product.imageURL) {
+            return AnyView(
+                AsyncImage(url: url) { image in
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(maxWidth: 200, maxHeight: 200)
+                        .cornerRadius(10)
+                        .frame(maxWidth: .infinity, alignment: .center) // Center the image
+                } placeholder: {
+                    ProgressView()
                 }
+            )
+        } else {
+            return AnyView(
+                Text("Image not available")
+                    .italic()
+                    .foregroundColor(.gray)
+                    .frame(maxWidth: .infinity, alignment: .center) // Center the placeholder
+            )
+        }
+    }
+    
+    // Nutrition Score in Circular View
+    private var nutritionScores: some View {
+        HStack {
+            Spacer() // Add Spacer for centering
+            ScoreCircleView(score: product.nutritionScore, label: "Nutrition Score")
+                .padding()
+            ScoreCircleView(score: product.ecoScore, label: "Eco Score")
+            Spacer() // Add Spacer for centering
+        }
+        .frame(maxWidth: .infinity)
+    }
+    
+    // Time Scanned Section
+    private var timeScanned: some View {
+        HStack {
+            Image(systemName: "clock")
+                .foregroundColor(.gray)
+            Text("Time Scanned: \(formattedDate(product.timeScanned))")
+                .font(.body)
+        }
+        .padding()
+        .background(RoundedRectangle(cornerRadius: 10).stroke(Color.gray.opacity(0.5), lineWidth: 1))
+        .padding(.horizontal)
+        .frame(maxWidth: .infinity, alignment: .center) // Center time scanned section
+    }
+    
+    // Product details
+    private var productDetails: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Name: \(product.name)")
+            Text("Brand: \(product.brand)")
+            Text("Quantity: \(product.quantity)")
+            Text("With Additives: \(product.withAdditives)")
+            Text("Possible Allergens: \(product.allergens.joined(separator: ", "))")
+            Text("Ingredients Analysis: \(product.ingredientsAnalysis)")
+            Text("Image URL: \(product.imageURL)")
+        }
+        .font(.body)
+        .padding()
+        .background(RoundedRectangle(cornerRadius: 10).stroke(Color.gray.opacity(0.5), lineWidth: 1))
+        .padding(.horizontal)
+        .frame(maxWidth: .infinity, alignment: .center) // Center product details
+    }
+    
+    // Summary Section with Table
+    private var ingredientSummary: some View {
+        VStack(alignment: .leading) {
+            if isLoading {
+                ProgressView("Fetching AI-generated info...")
+                    .padding()
+            } else if !product.aiGeneratedInfo.isEmpty {
+                let ingredients = product.ingredients.split(separator: ",").map { String($0).trimmingCharacters(in: .whitespacesAndNewlines) }
+                let summaries = product.aiGeneratedInfo
+                
+                ForEach(ingredients.indices, id: \.self) { index in
+                    VStack(alignment: .leading) {
+                        Text(ingredients[index])
+                            .font(.body)
+                            .bold()
+                            .foregroundColor(.red)
+                            .padding(.bottom, 2)
+                        
+                        Text(summaries[index])
+                            .font(.body)
+                            .foregroundColor(.black)
+                            .padding(.bottom, 10)
+                    }
+                    Divider()
+                }
+            } else {
+                Text("No AI-generated information available.")
+                    .italic()
+                    .foregroundColor(.gray)
+            }
+        }
+        .padding(.horizontal)
+    }
+    
+    // Function to load AI info
+    private func loadAIInfo() {
+        Task {
+            if product.aiGeneratedInfo.isEmpty {
+                isLoading = true
+                await product.fetchAIInfo() // Ensure this method is implemented in your Product model
+                isLoading = false
+            } else {
+                isLoading = false
             }
         }
     }
     
     // Function to format the date using DateFormatter
-    func formattedDate(_ date: Date) -> String {
+    private func formattedDate(_ date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium // Format like: Sep 10, 2024
         formatter.timeStyle = .short  // Format like: 3:45 PM

@@ -7,6 +7,8 @@ struct CameraView: View {
     
     @State private var productInfoView: NutritionInfoView? = nil
     @State private var scanningPaused = false // State to control scanning
+    @State private var showAlert = false // State to control alert presentation
+    @State private var alertMessage = "" // Message for the alert
 
     var body: some View {
         NavigationView {
@@ -45,6 +47,11 @@ struct CameraView: View {
                         .presentationDragIndicator(.visible)
                 }
             }
+            .alert(isPresented: $showAlert) {
+                Alert(title: Text("Info"),
+                      message: Text(alertMessage),
+                      dismissButton: .default(Text("OK")))
+            }
             .navigationBarTitle("Camera")
             .navigationBarTitleDisplayMode(.inline)
         }
@@ -70,17 +77,6 @@ struct CameraView: View {
                     .foregroundColor(.gray)
                     .font(.title2)
             }
-
-            VStack {
-                Spacer()
-                
-                bottomContainerView
-                    .background(.clear)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: UIScreen.main.bounds.height * 0.35) // Height of scanning information
-                    .clipped()
-            }
-            .edgesIgnoringSafeArea(.bottom)
         }
     }
 
@@ -104,6 +100,13 @@ struct CameraView: View {
                                 print("Failed to save context: \(error.localizedDescription)")
                             }
                         }
+                    } else {
+                        // Product not found, show alert
+                        DispatchQueue.main.async {
+                            self.alertMessage = "No product information could be found for the scanned barcode."
+                            self.showAlert = true
+                            scanningPaused = false // Resume scanning
+                        }
                     }
                 }
                 break
@@ -113,15 +116,8 @@ struct CameraView: View {
 
     // Show information button action
     private func showInfo() {
-        print("Info button tapped")
-    }
-
-    // The bottom view with barcode scan status information
-    private var bottomContainerView: some View {
-        VStack {
-            Text("Point your camera at a barcode to scan.")
-                .font(.headline)
-                .padding()
-        }
+        // Set the alert message and show the alert
+        alertMessage = "To get an accurate scan, making sure the barcode is fully exposed and you are in good lighting conditions. Try not to shake the camera too much as well."
+        showAlert = true
     }
 }
