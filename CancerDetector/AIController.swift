@@ -90,7 +90,7 @@ func chatBasedOnHistory(message: String, products: [Product]) async -> String? {
 func getInfoAboutIngredients(ingredients: [String]) async -> [String]? {
     // Create a prompt that lists each ingredient and asks for a summary
     let ingredientsText = ingredients.joined(separator: ", ")
-    let prompt = "For each of the following ingredients, generate a five-sentence summary of what the ingredient does and whether it is cancerous. Each summary should be separated by a unique delimiter and must not include any headers: \(ingredientsText). Please use '###' as a delimiter between each summary."
+    let prompt = "For each of the following ingredients, generate a five-sentence summary of what the ingredient does and whether it is cancerous. Each summary should be separated by a unique delimiter and must not include any headers: \(ingredientsText). Do not reapeat the name of the ingredient before you give the summary. Please use '###' as a delimiter between each summary."
 
     let parameters = [
         "model": "llama-3.1-sonar-small-128k-online",
@@ -142,3 +142,56 @@ func getInfoAboutIngredients(ingredients: [String]) async -> [String]? {
     
     return nil
 }
+
+func getCancerScore(ingredients: [String]) async -> Int? {
+    // Create a prompt that lists each ingredient and asks for a cancer score
+    let ingredientsText = ingredients.joined(separator: ", ")
+    let prompt = "Based on the following ingredients, please provide a single cancer score (1-10, with 10 being highly cancerous and 1 being not cancerous): \(ingredientsText)."
+
+    let parameters: [String: Any?] = [
+        "model": "llama-3.1-sonar-small-128k-online",
+        "messages": [
+            [
+                "role": "user",
+                "content": prompt
+            ]
+        ],
+        "return_citations": false
+    ]
+
+    do {
+        let postData = try JSONSerialization.data(withJSONObject: parameters, options: [])
+        let url = URL(string: "https://api.perplexity.ai/chat/completions")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.timeoutInterval = 30
+        request.allHTTPHeaderFields = [
+            "accept": "application/json",
+            "content-type": "application/json",
+            "authorization": "Bearer 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"
+        ]
+        request.httpBody = postData
+
+        let (data, _) = try await URLSession.shared.data(for: request)
+
+        // Parse the JSON response to extract the generated cancer score
+        if let responseJson = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+           let choices = responseJson["choices"] as? [[String: Any]],
+           let message = choices.first?["message"] as? [String: Any],
+           let content = message["content"] as? String {
+            
+            // Convert the response to an integer
+            if let cancerScore = Int(content.trimmingCharacters(in: .whitespacesAndNewlines)) {
+                return cancerScore
+            } else {
+                print("Error: The response did not contain a valid integer score.")
+                return nil
+            }
+        }
+    } catch {
+        print("Error during the request: \(error.localizedDescription)")
+    }
+    
+    return nil
+}
+

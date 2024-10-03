@@ -53,6 +53,15 @@ final class AppViewModel: ObservableObject {
                         return "N/A" // Default if no valid data is found
                     }()
                     
+                    // Extract calories from 'nutriments'
+                    let calories: Int = {
+                        if let nutriments = productJson["nutriments"] as? [String: Any],
+                           let energyKcal = nutriments["energy-kcal"] as? Double {
+                            return Int(energyKcal) // Cast to Int since calories are usually whole numbers
+                        }
+                        return -1 // Default if no valid data is found
+                    }()
+
                     let newProduct = Product(
                         withAdditives: productJson["additives_tags"] as? String ?? "N/A",
                         name: productJson["product_name"] as? String ?? "N/A",
@@ -65,7 +74,8 @@ final class AppViewModel: ObservableObject {
                         allergens: productJson["allergens"] as? [String] ?? [],
                         ingredientsAnalysis: productJson["ingredients_analysis"] as? String ?? "N/A",
                         imageURL: productJson["image_url"] as? String ?? "N/A",
-                        timeScanned: Date()
+                        timeScanned: Date(),
+                        calories: calories
                     )
                     
                     DispatchQueue.main.async {

@@ -23,6 +23,8 @@ final class Product {
     var imageURL: String
     var timeScanned: Date
     var aiGeneratedInfo: [String] = []
+    var calories: Int = -1
+    var cancerScore: Int = -1
     
     init(
         withAdditives: String,
@@ -36,7 +38,8 @@ final class Product {
         allergens: [String], // Added allergens
         ingredientsAnalysis: String, // Added ingredientsAnalysis
         imageURL: String,
-        timeScanned: Date
+        timeScanned: Date,
+        calories: Int
     ) {
         self.withAdditives = withAdditives
         self.name = name
@@ -50,6 +53,7 @@ final class Product {
         self.ingredientsAnalysis = ingredientsAnalysis // Initialize ingredientsAnalysis
         self.imageURL = imageURL
         self.timeScanned = timeScanned
+        self.calories = calories
     }
     
     // Fetch AI-generated information for ingredients
@@ -59,6 +63,15 @@ final class Product {
             aiGeneratedInfo = generatedInfo
         } else {
             aiGeneratedInfo = [] // No info returned
+        }
+    }
+    
+    func fetchCancerScore() async {
+        let ingredientList = self.ingredients.split(separator: ",").map { String($0).trimmingCharacters(in: .whitespacesAndNewlines) }
+        if let generatedInfo = await getCancerScore(ingredients: ingredientList) {
+            cancerScore = generatedInfo
+        } else {
+            cancerScore = -1 // No info returned
         }
     }
 }

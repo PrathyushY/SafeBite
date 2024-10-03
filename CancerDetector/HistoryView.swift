@@ -104,7 +104,8 @@ struct HistoryView: View {
                 allergens: [],
                 ingredientsAnalysis: "Whole fruit, rich in vitamins.",
                 imageURL: "https://example.com/apple.jpg",
-                timeScanned: Calendar.current.date(byAdding: .day, value: -1, to: Date())!
+                timeScanned: Calendar.current.date(byAdding: .day, value: -1, to: Date())!,
+                calories: 150
             ),
             Product(
                 withAdditives: "No",
@@ -118,7 +119,8 @@ struct HistoryView: View {
                 allergens: [],
                 ingredientsAnalysis: "Natural, high in potassium.",
                 imageURL: "https://example.com/banana.jpg",
-                timeScanned: Calendar.current.date(byAdding: .day, value: -2, to: Date())!
+                timeScanned: Calendar.current.date(byAdding: .day, value: -2, to: Date())!,
+                calories: 150
             ),
             Product(
                 withAdditives: "No",
@@ -132,7 +134,8 @@ struct HistoryView: View {
                 allergens: [],
                 ingredientsAnalysis: "Natural, high in potassium.",
                 imageURL: "https://example.com/banana.jpg",
-                timeScanned: Calendar.current.date(byAdding: .day, value: -3, to: Date())!
+                timeScanned: Calendar.current.date(byAdding: .day, value: -3, to: Date())!,
+                calories: 150
             ),
             Product(
                 withAdditives: "No",
@@ -146,7 +149,8 @@ struct HistoryView: View {
                 allergens: [],
                 ingredientsAnalysis: "Natural, high in potassium.",
                 imageURL: "https://example.com/banana.jpg",
-                timeScanned: Calendar.current.date(byAdding: .day, value: -4, to: Date())!
+                timeScanned: Calendar.current.date(byAdding: .day, value: -4, to: Date())!,
+                calories: 150
             ),
             Product(
                 withAdditives: "No",
@@ -160,7 +164,8 @@ struct HistoryView: View {
                 allergens: [],
                 ingredientsAnalysis: "Natural, high in potassium.",
                 imageURL: "https://example.com/banana.jpg",
-                timeScanned: Calendar.current.date(byAdding: .day, value: -5, to: Date())!
+                timeScanned: Calendar.current.date(byAdding: .day, value: -5, to: Date())!,
+                calories: 150
             ),
             Product(
                 withAdditives: "No",
@@ -174,7 +179,8 @@ struct HistoryView: View {
                 allergens: [],
                 ingredientsAnalysis: "Natural, high in potassium.",
                 imageURL: "https://example.com/banana.jpg",
-                timeScanned: Calendar.current.date(byAdding: .day, value: -6, to: Date())!
+                timeScanned: Calendar.current.date(byAdding: .day, value: -6, to: Date())!,
+                calories: 150
             ),
             Product(
                 withAdditives: "No",
@@ -188,7 +194,8 @@ struct HistoryView: View {
                 allergens: [],
                 ingredientsAnalysis: "Natural, high in potassium.",
                 imageURL: "https://example.com/banana.jpg",
-                timeScanned: Calendar.current.date(byAdding: .day, value: -7, to: Date())!
+                timeScanned: Calendar.current.date(byAdding: .day, value: -7, to: Date())!,
+                calories: 150
             )
         ]
         

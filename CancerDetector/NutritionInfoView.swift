@@ -95,9 +95,15 @@ struct NutritionInfoView: View {
     private var nutritionScores: some View {
         HStack {
             Spacer() // Add Spacer for centering
+            
             ScoreCircleView(score: product.nutritionScore, label: "Nutrition Score")
                 .padding()
+            
+            ScoreCircleView(score: product.cancerScore, label: "Cancer Score")
+                .padding()
+            
             ScoreCircleView(score: product.ecoScore, label: "Eco Score")
+            
             Spacer() // Add Spacer for centering
         }
         .frame(maxWidth: .infinity)
@@ -123,6 +129,7 @@ struct NutritionInfoView: View {
             Text("Name: \(product.name)")
             Text("Brand: \(product.brand)")
             Text("Quantity: \(product.quantity)")
+            Text("Calories: \(product.calories) kcal")
             Text("With Additives: \(product.withAdditives)")
             Text("Possible Allergens: \(product.allergens.joined(separator: ", "))")
             Text("Ingredients Analysis: \(product.ingredientsAnalysis)")
@@ -194,6 +201,7 @@ struct NutritionInfoView: View {
 struct ScoreCircleView: View {
     let score: Int
     let label: String
+    let radius: CGFloat = 85
     
     var body: some View {
         VStack {
@@ -201,14 +209,14 @@ struct ScoreCircleView: View {
                 // Background circle (gray outline)
                 Circle()
                     .stroke(Color.gray.opacity(0.3), lineWidth: 15)
-                    .frame(width: 100, height: 100) // Updated size
+                    .frame(width: radius, height: radius) // Updated size
                 
                 // Foreground circle representing the score (red outline)
                 Circle()
                     .trim(from: 0, to: CGFloat(score) / 100)
                     .stroke(Color.red, lineWidth: 15)
                     .rotationEffect(.degrees(-90)) // Start from the top
-                    .frame(width: 100, height: 100) // Updated size
+                    .frame(width: radius, height: radius) // Updated size
                 
                 // Display the score in the center
                 Text("\(score)")
@@ -240,6 +248,7 @@ struct ScoreCircleView: View {
         allergens: ["None"],
         ingredientsAnalysis: "Contains sugar and salt, minimal processing",
         imageURL: "https://www.applesfromny.com/wp-content/uploads/2020/05/20Ounce_NYAS-Apples2.png",
-        timeScanned: Date()
+        timeScanned: Date(),
+        calories: 150
     ))
 }
