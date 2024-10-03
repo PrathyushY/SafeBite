@@ -27,8 +27,15 @@ struct NutritionInfoView: View {
                 .padding()
                 .frame(maxWidth: .infinity) // Make sure content is centered
             }
-            .navigationTitle("Product Info")
+            .padding(.top, -90)
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text("Product Info")
+                        .font(.headline)
+                        .offset(y: -0)
+                }
+            }
             .toolbar {
                 // Add an info button to the top-right of the toolbar
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -62,6 +69,7 @@ struct NutritionInfoView: View {
             .font(.title)
             .bold()
             .multilineTextAlignment(.center) // Center text
+            .padding(.top, 100)
             .padding(.bottom, 10)
             .frame(maxWidth: .infinity, alignment: .center) // Center the header
     }
