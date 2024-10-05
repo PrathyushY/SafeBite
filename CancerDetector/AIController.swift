@@ -75,6 +75,7 @@ func chatBasedOnHistory(message: String, products: [Product]) async -> String? {
         let choices = responseJson["choices"] as? [[String: Any]],
         let message = choices.first?["message"] as? [String: Any],
         let content = message["content"] as? String {
+          print(content)
         return content
       }
     } else {
@@ -90,7 +91,7 @@ func chatBasedOnHistory(message: String, products: [Product]) async -> String? {
 func getInfoAboutIngredients(ingredients: [String]) async -> [String]? {
     // Create a prompt that lists each ingredient and asks for a summary
     let ingredientsText = ingredients.joined(separator: ", ")
-    let prompt = "For each of the following ingredients, generate a five-sentence summary of what the ingredient does and whether it is cancerous. Each summary should be separated by a unique delimiter and must not include any headers: \(ingredientsText). Do not reapeat the name of the ingredient before you give the summary. Please use '###' as a delimiter between each summary."
+    let prompt = "For each of the following ingredients, generate a five-sentence summary of what the ingredient does and whether it is cancerous. Each summary should be separated by a unique delimiter and must not include any headers: \(ingredientsText). Do not reapeat the name of the ingredient before you give the summary. Do not write markdown formatting (bold, italics, etc. for any of the responses). Please use '###' as a delimiter between each summary."
 
     let parameters = [
         "model": "llama-3.1-sonar-small-128k-online",
@@ -126,12 +127,6 @@ func getInfoAboutIngredients(ingredients: [String]) async -> [String]? {
             
             // Split the content using the unique delimiter
             let summaries = content.split(separator: "###").map { String($0).trimmingCharacters(in: .whitespacesAndNewlines) }
-            
-            // Check if the summaries list matches the number of ingredients
-            if summaries.count != ingredients.count {
-                print("Warning: Number of summaries doesn't match the number of ingredients.")
-                return nil
-            }
 
             // Return an array of summaries
             return summaries
@@ -179,6 +174,8 @@ func getCancerScore(ingredients: [String]) async -> Int? {
            let choices = responseJson["choices"] as? [[String: Any]],
            let message = choices.first?["message"] as? [String: Any],
            let content = message["content"] as? String {
+            
+            print("Cancer score response: " + content.trimmingCharacters(in: .whitespacesAndNewlines))
             
             // Convert the response to an integer
             if let cancerScore = Int(content.trimmingCharacters(in: .whitespacesAndNewlines)) {
