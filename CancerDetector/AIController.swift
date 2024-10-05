@@ -141,7 +141,7 @@ func getInfoAboutIngredients(ingredients: [String]) async -> [String]? {
 func getCancerScore(ingredients: [String]) async -> Int? {
     // Create a prompt that lists each ingredient and asks for a cancer score
     let ingredientsText = ingredients.joined(separator: ", ")
-    let prompt = "Based on the following ingredients, please provide a single cancer score (1-10, with 10 being highly cancerous and 1 being not cancerous): \(ingredientsText)."
+    let prompt = "Based on the following ingredients, please provide a single cancer score (1-10, with 10 being highly cancerous and 1 being not cancerous): \(ingredientsText). Make sure to not output any thing except a single integer which is the cancer score. Do not output any reasoning or anything else. Just a single integer."
 
     let parameters: [String: Any?] = [
         "model": "llama-3.1-sonar-small-128k-online",

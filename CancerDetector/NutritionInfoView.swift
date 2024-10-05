@@ -47,6 +47,7 @@ struct NutritionInfoView: View {
         }
         .onAppear {
             loadAIInfo()
+            getCancerScore()
         }
         .alert(isPresented: $showAlert) {
             Alert(title: Text("Warning"),
@@ -160,18 +161,27 @@ struct NutritionInfoView: View {
                 let ingredients = product.ingredients.split(separator: ",").map { String($0).trimmingCharacters(in: .whitespacesAndNewlines) }
                 let summaries = product.aiGeneratedInfo
                 
-                ForEach(ingredients.indices, id: \.self) { index in
+                ForEach(0..<ingredients.count, id: \.self) { index in
                     VStack(alignment: .leading) {
                         Text(ingredients[index])
                             .font(.body)
                             .bold()
                             .foregroundColor(.red)
                             .padding(.bottom, 2)
-                        
-                        Text(summaries[index])
-                            .font(.body)
-                            .foregroundColor(.black)
-                            .padding(.bottom, 10)
+
+                        // Safely access the summary if it exists
+                        if index < summaries.count {
+                            Text(summaries[index])
+                                .font(.body)
+                                .foregroundColor(.black)
+                                .padding(.bottom, 10)
+                        } else {
+                            // Display a message if no summary is available
+                            Text("No AI-generated information available.")
+                                .font(.body)
+                                .foregroundColor(.gray)
+                                .padding(.bottom, 10)
+                        }
                     }
                     Divider()
                 }
@@ -193,6 +203,14 @@ struct NutritionInfoView: View {
                 isLoading = false
             } else {
                 isLoading = false
+            }
+        }
+    }
+    
+    private func getCancerScore() {
+        Task {
+            if product.cancerScore == -1 {
+                await product.fetchCancerScore()
             }
         }
     }
