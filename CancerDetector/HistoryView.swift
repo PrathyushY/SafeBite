@@ -51,11 +51,11 @@ struct HistoryView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     EditButton()
                 }
-                ToolbarItem {
-                    Button("Add Test Product") {
-                        populateProducts()
-                    }
-                }
+//                ToolbarItem {
+//                    Button("Add Test Product") {
+//                        populateProducts()
+//                    }
+//                }
                 ToolbarItem {
                     Button("Clear History") {
                         clearHistory()

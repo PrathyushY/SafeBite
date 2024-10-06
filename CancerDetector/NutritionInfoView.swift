@@ -14,7 +14,8 @@ struct NutritionInfoView: View {
                     
                     productImage // Display the image if available
                     
-                    nutritionScores // Nutrition Score in Circular View
+                    nutritionScores// Nutrition Score in Circular View
+                        .padding(.top)
                     
                     timeScanned // Time Scanned Section
                         .padding(3)
@@ -27,7 +28,7 @@ struct NutritionInfoView: View {
                 .padding()
                 .frame(maxWidth: .infinity) // Make sure content is centered
             }
-            .padding(.top, -90)
+            .padding(.top, -75)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
@@ -60,7 +61,7 @@ struct NutritionInfoView: View {
     // Show information button action
     private func showInfo() {
         // Set the alert message and show the alert
-        alertMessage = "Be cautious when trusting AI-generated content. Always verify information from reliable sources."
+        alertMessage = "Be cautious when trusting AI-generated content. Always verify information from reliable sources. Negative scores indicate that no data is available for this product."
         showAlert = true
     }
     
@@ -102,20 +103,23 @@ struct NutritionInfoView: View {
     
     // Nutrition Score in Circular View
     private var nutritionScores: some View {
-        HStack {
-            Spacer() // Add Spacer for centering
-            
-            ScoreCircleView(score: product.nutritionScore, label: "Nutrition Score")
-                .padding()
-            
-            ScoreCircleView(score: product.cancerScore, label: "Cancer Score")
-                .padding()
-            
-            ScoreCircleView(score: product.ecoScore, label: "Eco Score")
-            
-            Spacer() // Add Spacer for centering
+        VStack {
+            HStack {
+                Spacer() // Add Spacer for centering
+                ScoreCircleView(score: product.nutritionScore, label: "Nutrition Score")
+                Spacer() // Add Spacer for centering
+                ScoreCircleView(score: product.cancerScore, label: "Cancer Score")
+                Spacer() // Add Spacer for centering
+                Spacer()
+                ScoreCircleView(score: product.ecoScore, label: "Eco Score")
+                Spacer() // Add Spacer for centering
+            }
+            .frame(maxWidth: .infinity)
+
+            // Adding an additional alignment section to ensure everything is centered vertically
+            .padding(.bottom, 20) // Add some bottom padding for spacing
         }
-        .frame(maxWidth: .infinity)
+        .frame(maxWidth: .infinity) // Ensure the VStack takes full width
     }
     
     // Time Scanned Section
@@ -154,6 +158,13 @@ struct NutritionInfoView: View {
     // Summary Section with Table
     private var ingredientSummary: some View {
         VStack(alignment: .leading) {
+            Text("Ingredients Overview")
+                .font(.headline)
+                .fontWeight(.semibold)
+                .padding(.bottom)
+            
+            Divider()
+            
             if isLoading {
                 ProgressView("Fetching AI-generated info...")
                     .padding()
@@ -183,6 +194,8 @@ struct NutritionInfoView: View {
                                 .padding(.bottom, 10)
                         }
                     }
+                    //.padding()
+                    //.background(RoundedRectangle(cornerRadius: 10).stroke(Color.gray.opacity(0.5), lineWidth: 1))
                     Divider()
                 }
             } else {
@@ -255,7 +268,7 @@ struct ScoreCircleView: View {
                 .font(.body)
                 .bold()
                 .foregroundColor(.gray)
-                .padding(.top, 8) // Added padding
+                .padding(.top, 5) // Added padding
         }
     }
 }

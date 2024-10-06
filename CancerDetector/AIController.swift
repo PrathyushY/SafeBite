@@ -63,7 +63,7 @@ func chatBasedOnHistory(message: String, products: [Product]) async -> String? {
     request.allHTTPHeaderFields = [
       "accept": "application/json",
       "content-type": "application/json",
-      "authorization": "Bearer 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" // Use your actual API key
+      "authorization": "Bearer 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" // Use your actual API key
     ]
     request.httpBody = postData
     // Perform the API request
@@ -113,7 +113,7 @@ func getInfoAboutIngredients(ingredients: [String]) async -> [String]? {
         request.allHTTPHeaderFields = [
             "accept": "application/json",
             "content-type": "application/json",
-            "authorization": "Bearer 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"
+            "authorization": "Bearer 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"
         ]
         request.httpBody = postData
 
@@ -163,7 +163,7 @@ func getCancerScore(ingredients: [String]) async -> Int? {
         request.allHTTPHeaderFields = [
             "accept": "application/json",
             "content-type": "application/json",
-            "authorization": "Bearer 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"
+            "authorization": "Bearer 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"
         ]
         request.httpBody = postData
 

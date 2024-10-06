@@ -42,42 +42,45 @@ struct StatsView: View {
         let groupedByDay = Dictionary(grouping: products.filter {
             $0.timeScanned >= Calendar.current.date(byAdding: .day, value: -7, to: Date())!
         }, by: { Calendar.current.startOfDay(for: $0.timeScanned) })
-        
+
         return last7Days.map { date in
             NutritionScorePerDay(
                 date: date,
                 totalNutritionScore: groupedByDay[date]?.reduce(0) { (result: Int, product: Product) in
-                    result + product.nutritionScore
+                    // Only add scores that are not -1
+                    result + (product.nutritionScore != -1 ? product.nutritionScore : 0)
                 } ?? 0
             )
         }
     }
-    
+
     var ecoScores: [EcoScorePerDay] {
         let groupedByDay = Dictionary(grouping: products.filter {
             $0.timeScanned >= Calendar.current.date(byAdding: .day, value: -7, to: Date())!
         }, by: { Calendar.current.startOfDay(for: $0.timeScanned) })
-        
+
         return last7Days.map { date in
             EcoScorePerDay(
                 date: date,
                 totalEcoScore: groupedByDay[date]?.reduce(0.0) { (result: Double, product: Product) in
-                    result + Double(product.ecoScore)
+                    // Only add scores that are not -1
+                    result + (product.ecoScore != -1 ? Double(product.ecoScore) : 0.0)
                 } ?? 0.0
             )
         }
     }
-    
+
     var cancerScores: [CancerScorePerDay] {
         let groupedByDay = Dictionary(grouping: products.filter {
             $0.timeScanned >= Calendar.current.date(byAdding: .day, value: -7, to: Date())!
         }, by: { Calendar.current.startOfDay(for: $0.timeScanned) })
-        
+
         return last7Days.map { date in
             CancerScorePerDay(
                 date: date,
                 totalCancerScore: groupedByDay[date]?.reduce(0.0) { (result: Double, product: Product) in
-                    result + Double(product.cancerScore)
+                    // Only add scores that are not -1
+                    result + (product.cancerScore != -1 ? Double(product.cancerScore) : 0.0)
                 } ?? 0.0
             )
         }
@@ -92,7 +95,8 @@ struct StatsView: View {
             CaloriesPerDay(
                 date: date,
                 totalCalories: groupedByDay[date]?.reduce(0.0) { (result: Double, product: Product) in
-                    result + Double(product.calories)
+                    // Only add scores that are not -1
+                    result + (product.cancerScore != -1 ? Double(product.cancerScore) : 0.0)
                 } ?? 0.0
             )
         }
