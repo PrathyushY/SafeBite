@@ -258,7 +258,6 @@
 			);
 			mainGroup = 7D775DE72C67C876004E4C7F;
 			packageReferences = (
-				7D768FB72C889A6E006CAA42 /* XCRemoteSwiftPackageReference "FontBlaster" */,
 			);
 			productRefGroup = 7D775DF12C67C876004E4C7F /* Products */;
 			projectDirPath = "";
@@ -647,17 +646,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		7D768FB72C889A6E006CAA42 /* XCRemoteSwiftPackageReference "FontBlaster" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/ArtSabintsev/FontBlaster";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.3.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
 	};
 	rootObject = 7D775DE82C67C876004E4C7F /* Project object */;
 }
