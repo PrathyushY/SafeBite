@@ -184,7 +184,6 @@ struct NutritionInfoView: View {
                         if index < summaries.count {
                             Text(summaries[index])
                                 .font(.body)
-                                .foregroundColor(.black)
                                 .padding(.bottom, 10)
                         } else {
                             // Display a message if no summary is available
