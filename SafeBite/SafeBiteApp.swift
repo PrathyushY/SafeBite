@@ -1,6 +1,6 @@
 //
-//  CancerDetectorApp.swift
-//  CancerDetector
+//  SafeBiteApp.swift
+//  SafeBite
 //
 //  Created by Prathyush Yeturi on 8/10/24.
 //
@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 
 @main
-struct CancerDetectorApp: App {
+struct SafeBiteApp: App {
     @StateObject private var vm = AppViewModel()
     
     var sharedModelContainer: ModelContainer = {

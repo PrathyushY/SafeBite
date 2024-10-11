@@ -1,14 +1,14 @@
 //
-//  CancerDetectorTests.swift
-//  CancerDetectorTests
+//  SafeBiteTests.swift
+//  SafeBiteTests
 //
 //  Created by Prathyush Yeturi on 8/10/24.
 //
 
 import XCTest
-@testable import CancerDetector
+@testable import SafeBite
 
-final class CancerDetectorTests: XCTestCase {
+final class SafeBiteTests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
