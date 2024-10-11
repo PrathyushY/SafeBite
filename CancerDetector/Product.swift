@@ -71,7 +71,7 @@ final class Product {
         if let generatedInfo = await getCancerScore(ingredients: ingredientList) {
             cancerScore = generatedInfo
         } else {
-            cancerScore = -1 // No info returned
+            cancerScore = 0 // No info returned
         }
     }
 }

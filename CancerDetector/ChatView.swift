@@ -144,7 +144,6 @@ struct ChatView: View {
             .task {
                 await fetchProducts()
             }
-            .padding()
         }
     }
     
