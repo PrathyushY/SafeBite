@@ -23,6 +23,7 @@
 		7D8717D12C7F506900F1CA8B /* ChatMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D8717D02C7F506900F1CA8B /* ChatMessage.swift */; };
 		7D8E88BF2C78C6DA00D3C338 /* AIController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D8E88BE2C78C6DA00D3C338 /* AIController.swift */; };
 		7D9645E82C6EABEB00E61BCF /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D9645E72C6EABEB00E61BCF /* Product.swift */; };
+		7DA2A3F72CBBF2E100CE5480 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7DA2A3F62CBBF2E100CE5480 /* Launch Screen.storyboard */; };
 		7DC9ED6B2C6BE29E00FA6F52 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DC9ED6A2C6BE29E00FA6F52 /* CameraView.swift */; };
 /* End PBXBuildFile section */
 
@@ -64,6 +65,7 @@
 		7D8717D02C7F506900F1CA8B /* ChatMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessage.swift; sourceTree = "<group>"; };
 		7D8E88BE2C78C6DA00D3C338 /* AIController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIController.swift; sourceTree = "<group>"; };
 		7D9645E72C6EABEB00E61BCF /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
+		7DA2A3F62CBBF2E100CE5480 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		7DC9ED6A2C6BE29E00FA6F52 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -102,6 +104,7 @@
 		7D775DE72C67C876004E4C7F = {
 			isa = PBXGroup;
 			children = (
+				7DA2A3F62CBBF2E100CE5480 /* Launch Screen.storyboard */,
 				7D775DF22C67C876004E4C7F /* SafeBite */,
 				7D775E052C67C877004E4C7F /* SafeBiteTests */,
 				7D775E0F2C67C877004E4C7F /* SafeBiteUITests */,
@@ -275,6 +278,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7DA2A3F72CBBF2E100CE5480 /* Launch Screen.storyboard in Resources */,
 				7D775DFD2C67C877004E4C7F /* Preview Assets.xcassets in Resources */,
 				7D775DFA2C67C877004E4C7F /* Assets.xcassets in Resources */,
 			);
@@ -480,11 +484,14 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SafeBite/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = SafeBite;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_NSCameraUsageDescription = "This app uses the camera to scan the barcodes of food products";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "This app uses your photo library to scan barcodes from previous photos you've taken";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -492,7 +499,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.prathyeturi.CancerDetector;
+				PRODUCT_BUNDLE_IDENTIFIER = com.prathyeturi.SafeBite;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -516,11 +523,14 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SafeBite/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = SafeBite;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_NSCameraUsageDescription = "This app uses the camera to scan the barcodes of food products";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "This app uses your photo library to scan barcodes from previous photos you've taken";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -528,7 +538,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.prathyeturi.CancerDetector;
+				PRODUCT_BUNDLE_IDENTIFIER = com.prathyeturi.SafeBite;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
