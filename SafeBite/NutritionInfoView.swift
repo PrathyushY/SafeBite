@@ -3,66 +3,98 @@ import SwiftUI
 struct NutritionInfoView: View {
     let product: Product
     @State private var isLoading = true // Tracks whether AI info is loading
-    @State private var showAlert = false // State to control alert presentation
-    @State private var alertMessage = "" // Message for the alert
+    @State private var showInfoSheet = false // State to control modal visibility
     
     var body: some View {
-        NavigationView {
-            ScrollView {
-                VStack(alignment: .center) { // Center all content
-                    productHeader // Product Information Header
-                    
-                    productImage // Display the image if available
-                    
-                    nutritionScores// Nutrition Score in Circular View
-                        .padding(.top)
-                    
-                    timeScanned // Time Scanned Section
-                        .padding(3)
-                    
-                    productDetails // Product details
-                        .padding()
-                    
-                    ingredientSummary // Summary Section with Table
+        ZStack { // Use ZStack to layer the content and modal
+            NavigationView {
+                ScrollView {
+                    VStack(alignment: .center) {
+                        productHeader
+                        productImage
+                        nutritionScores
+                            .padding(.top)
+                        timeScanned
+                            .padding(3)
+                        productDetails
+                            .padding()
+                        ingredientSummary
+                    }
+                    .padding()
+                    .frame(maxWidth: .infinity)
                 }
-                .padding()
-                .frame(maxWidth: .infinity) // Make sure content is centered
-            }
-            .padding(.top, -75)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text("Product Info")
-                        .font(.headline)
-                        .offset(y: -0)
-                }
-            }
-            .toolbar {
-                // Add an info button to the top-right of the toolbar
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: showInfo) {
-                        Image(systemName: "info.circle")
+                .padding(.top, -75)
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .principal) {
+                        Text("Product Info")
+                            .font(.headline)
+                            .offset(y: -0)
                     }
                 }
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button(action: showInfo) {
+                            Image(systemName: "info.circle")
+                        }
+                    }
+                }
+                .sheet(isPresented: $showInfoSheet) {
+                    InfoSheetView() // Present the new sheet view
+                }
             }
+            .onAppear {
+                loadAIInfo()
+                getCancerScore()
+            }
+            .edgesIgnoringSafeArea(.top)
         }
-        .onAppear {
-            loadAIInfo()
-            getCancerScore()
+    }
+    
+    // Info Sheet View
+    private struct InfoSheetView: View {
+        var body: some View {
+            NavigationView {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 20) {
+                        Text("Information")
+                            .font(.title)
+                            .fontWeight(.semibold)
+                            .padding(.top, 20)
+                        
+                        Text("Be cautious when trusting AI-generated content. Always verify information from reliable sources. Zero scores usually indicate that no data is available for this product.")
+                            .font(.body)
+                            .padding(.bottom, 10)
+                        
+                        Text("""
+                        The Nutrition Score is a logo on the overall nutritional quality of products.The score from 0 to 100 is calculated based on nutrients and foods to favor (proteins, fiber, fruits, vegetables, and legumes) and nutrients to limit (calories, saturated fat, sugars, salt). The score is calculated from the data of the nutrition facts table and the composition data (fruits, vegetables, and legumes).
+                        """)
+                        .font(.body)
+                        .padding(.bottom, 10)
+                        
+                        Text("""
+                        The Cancer Score is a measure on a scale from 1-100 of how potentially cancerous a product may be, with 1 being the least likely to cause cancer and 100 being the most. It is an AI-generated value based on the ingredients in the product. Be cautious when trusting AI-generated information.
+                        """)
+                        .font(.body)
+                        .padding(.bottom, 10)
+                        
+                        Text("""
+                        The Eco Score is an experimental score that summarizes the environmental impacts of food products. The Eco-Score was initially developed for France and is being extended to other European countries. The Eco-Score formula is subject to change as it is regularly improved to make it more precise and better suited to each country.
+                        """)
+                        .font(.body)
+                        .padding(.bottom, 10)
+                    }
+                    .padding()
+                }
+            }
+            .navigationBarTitle("Info")
+            .presentationDragIndicator(.visible)
         }
-        .alert(isPresented: $showAlert) {
-            Alert(title: Text("Warning"),
-                  message: Text(alertMessage),
-                  dismissButton: .default(Text("OK")))
-        }
-        .edgesIgnoringSafeArea(.top)
     }
     
     // Show information button action
     private func showInfo() {
-        // Set the alert message and show the alert
-        alertMessage = "Be cautious when trusting AI-generated content. Always verify information from reliable sources. Negative scores indicate that no data is available for this product."
-        showAlert = true
+        showInfoSheet = true
     }
     
     // Product Information header
@@ -77,28 +109,26 @@ struct NutritionInfoView: View {
     }
     
     // Display the image if available
+    // Display the image if available
     private var productImage: some View {
-        if let url = URL(string: product.imageURL) {
-            return AnyView(
+        HStack { // Use HStack to align the image and info button horizontally
+            if let url = URL(string: product.imageURL) {
                 AsyncImage(url: url) { image in
                     image
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(maxWidth: 200, maxHeight: 200)
                         .cornerRadius(10)
-                        .frame(maxWidth: .infinity, alignment: .center) // Center the image
                 } placeholder: {
                     ProgressView()
                 }
-            )
-        } else {
-            return AnyView(
+            } else {
                 Text("Image not available")
                     .italic()
                     .foregroundColor(.gray)
-                    .frame(maxWidth: .infinity, alignment: .center) // Center the placeholder
-            )
+            }
         }
+        .frame(maxWidth: .infinity, alignment: .center) // Center the image and info button
     }
     
     // Nutrition Score in Circular View
@@ -115,7 +145,7 @@ struct NutritionInfoView: View {
                 Spacer() // Add Spacer for centering
             }
             .frame(maxWidth: .infinity)
-
+            
             // Adding an additional alignment section to ensure everything is centered vertically
             .padding(.bottom, 20) // Add some bottom padding for spacing
         }
@@ -176,7 +206,7 @@ struct NutritionInfoView: View {
                             .bold()
                             .foregroundColor(.red)
                             .padding(.bottom, 2)
-
+                        
                         // Safely access the summary if it exists
                         if index < summaries.count {
                             Text(summaries[index])
