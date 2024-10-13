@@ -10,24 +10,20 @@ import SwiftData
 
 @Model
 final class Product {
-    var withAdditives: String
     var name: String
     var brand: String
     var quantity: String
     var ingredients: String
     var nutritionScore: Int
-    var ecoScore: Int // Added ecoScore
-    var foodProcessingRating: String // Added foodProcessingRating
-    var allergens: [String] // Added allergens
-    var ingredientsAnalysis: String // Added ingredientsAnalysis
-    var imageURL: String
+    var ecoScore: Int
+    var foodProcessingRating: String
     var timeScanned: Date
     var aiGeneratedInfo: [String] = []
+    var imageURL: String
     var calories: Int = -1
     var cancerScore: Int = -1
     
     init(
-        withAdditives: String,
         name: String,
         brand: String,
         quantity: String,
@@ -35,22 +31,17 @@ final class Product {
         nutritionScore: Int,
         ecoScore: Int, // Added ecoScore
         foodProcessingRating: String, // Added foodProcessingRating
-        allergens: [String], // Added allergens
-        ingredientsAnalysis: String, // Added ingredientsAnalysis
         imageURL: String,
         timeScanned: Date,
         calories: Int
     ) {
-        self.withAdditives = withAdditives
         self.name = name
         self.brand = brand
         self.quantity = quantity
         self.ingredients = ingredients
         self.nutritionScore = nutritionScore
-        self.ecoScore = ecoScore // Initialize ecoScore
-        self.foodProcessingRating = foodProcessingRating // Initialize foodProcessingRating
-        self.allergens = allergens // Initialize allergens
-        self.ingredientsAnalysis = ingredientsAnalysis // Initialize ingredientsAnalysis
+        self.ecoScore = ecoScore
+        self.foodProcessingRating = foodProcessingRating
         self.imageURL = imageURL
         self.timeScanned = timeScanned
         self.calories = calories

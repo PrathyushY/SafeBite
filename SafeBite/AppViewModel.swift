@@ -63,7 +63,6 @@ final class AppViewModel: ObservableObject {
                     }()
 
                     let newProduct = Product(
-                        withAdditives: productJson["additives_tags"] as? String ?? "N/A",
                         name: productJson["product_name"] as? String ?? "N/A",
                         brand: productJson["brands"] as? String ?? "N/A",
                         quantity: productJson["quantity"] as? String ?? "N/A",
@@ -71,8 +70,8 @@ final class AppViewModel: ObservableObject {
                         nutritionScore: productJson["nutriscore_score"] as? Int ?? 0,
                         ecoScore: productJson["ecoscore_score"] as? Int ?? 0, // Assuming you might have this field
                         foodProcessingRating: foodProcessingRating,
-                        allergens: productJson["allergens"] as? [String] ?? [],
-                        ingredientsAnalysis: productJson["ingredients_analysis"] as? String ?? "N/A",
+                        //allergens: productJson["allergens"] as? [String] ?? [],
+                        //ingredientsAnalysis: productJson["ingredients_analysis"] as? String ?? "N/A",
                         imageURL: productJson["image_url"] as? String ?? "N/A",
                         timeScanned: Date(),
                         calories: calories

@@ -19,8 +19,6 @@ func chatBasedOnHistory(message: String, products: [Product]) async -> String? {
       "nutritionScore": product.nutritionScore,
       "ecoScore": product.ecoScore,
       "foodProcessingRating": product.foodProcessingRating,
-      "allergens": product.allergens,
-      "ingredientsAnalysis": product.ingredientsAnalysis,
       "timeScanned": product.timeScanned.ISO8601Format()
     ]
   }

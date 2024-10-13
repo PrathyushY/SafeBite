@@ -143,10 +143,7 @@ struct NutritionInfoView: View {
             Text("Brand: \(product.brand)")
             Text("Quantity: \(product.quantity)")
             Text("Calories: \(product.calories) kcal")
-            Text("With Additives: \(product.withAdditives)")
-            Text("Possible Allergens: \(product.allergens.joined(separator: ", "))")
-            Text("Ingredients Analysis: \(product.ingredientsAnalysis)")
-            Text("Image URL: \(product.imageURL)")
+            Text("Food Processing Rating: \(product.foodProcessingRating)")
         }
         .font(.body)
         .padding()
@@ -275,7 +272,6 @@ struct ScoreCircleView: View {
 // Preview the view
 #Preview {
     NutritionInfoView(product: Product(
-        withAdditives: "No",
         name: "Name",
         brand: "Brand",
         quantity: "Quantity",
@@ -283,8 +279,6 @@ struct ScoreCircleView: View {
         nutritionScore: 85,
         ecoScore: 90,
         foodProcessingRating: "Low",
-        allergens: ["None"],
-        ingredientsAnalysis: "Contains sugar and salt, minimal processing",
         imageURL: "https://www.applesfromny.com/wp-content/uploads/2020/05/20Ounce_NYAS-Apples2.png",
         timeScanned: Date(),
         calories: 150
