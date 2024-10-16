@@ -83,6 +83,12 @@ struct NutritionInfoView: View {
                         """)
                         .font(.body)
                         .padding(.bottom, 10)
+                        
+                        Text("""
+                        Information about food products is from https://world.openfoodfacts.org/
+                        """)
+                        .font(.body)
+                        .padding(.bottom, 10)
                     }
                     .padding()
                 }
@@ -208,7 +214,7 @@ struct NutritionInfoView: View {
                             .padding(.bottom, 2)
                         
                         // Safely access the summary if it exists
-                        if index < summaries.count {
+                        if summaries.count != 0 {
                             Text(summaries[index])
                                 .font(.body)
                                 .padding(.bottom, 10)
