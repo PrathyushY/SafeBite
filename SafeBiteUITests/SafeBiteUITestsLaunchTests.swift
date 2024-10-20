@@ -1,13 +1,13 @@
 //
-//  CancerDetectorUITestsLaunchTests.swift
-//  CancerDetectorUITests
+//  SafeBiteUITestsLaunchTests.swift
+//  SafeBiteUITests
 //
 //  Created by Prathyush Yeturi on 8/10/24.
 //
 
 import XCTest
 
-final class CancerDetectorUITestsLaunchTests: XCTestCase {
+final class SafeBiteUITestsLaunchTests: XCTestCase {
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true
