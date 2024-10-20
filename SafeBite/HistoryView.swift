@@ -63,7 +63,7 @@ struct HistoryView: View {
 //                        populateProducts()
 //                    }
 //                }
-                ToolbarItem {
+                ToolbarItem(placement: .navigationBarLeading) {
                     Button("Clear History") {
                         clearHistory()
                     }

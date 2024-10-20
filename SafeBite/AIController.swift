@@ -1,6 +1,6 @@
 //
-//  PerplexityResponse.swift
-//  CancerDetector
+//  AIController.swift
+//  SafeBite
 //
 //  Created by Prathyush Yeturi on 8/23/24.
 //
@@ -79,7 +79,7 @@ func chatBasedOnHistory(message: String, products: [Product]) async -> String? {
                let choices = responseJson["choices"] as? [[String: Any]],
                let message = choices.first?["message"] as? [String: Any],
                let content = message["content"] as? String {
-                print(content)
+                //print(content)
                 return content
             }
         } else {
