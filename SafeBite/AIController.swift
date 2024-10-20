@@ -9,7 +9,7 @@ import Foundation
 
 import Foundation
 
-private let apiKey = "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"
+private let apiKey = "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"
 
 func chatBasedOnHistory(message: String, products: [Product]) async -> String? {
     // Convert products to a JSON-compatible dictionary or array
@@ -64,7 +64,7 @@ func chatBasedOnHistory(message: String, products: [Product]) async -> String? {
         let url = URL(string: "https://api.openai.com/v1/chat/completions")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        request.timeoutInterval = 10
+        request.timeoutInterval = 30
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
         request.httpBody = postData
@@ -92,15 +92,19 @@ func chatBasedOnHistory(message: String, products: [Product]) async -> String? {
     return nil
 }
 
-func getInfoAboutIngredients(ingredients: [String]) async -> [String]? {
+func getInfoAboutIngredients(ingredients: String) async -> String? {
     // Create a prompt that lists each ingredient and asks for a summary
-    let ingredientsText = ingredients.joined(separator: ", ")
     let prompt = """
-    For each of the following ingredients, generate a five-sentence summary of what the ingredient does and whether it is cancerous. 
-    Each summary should be separated by a unique delimiter and must not include any headers: \(ingredientsText). 
-    Do not repeat the name of the ingredient before you give the summary. 
-    Do not write markdown formatting (bold, italics, etc. for any of the responses). 
-    Please use '###' as a delimiter between each summary.
+    For each of the following ingredients, generate a five-sentence summary of what the ingredient does and whether it is cancerous. Each ingredient name should precede its summary and be separated from it by a colon (:). Use the delimiter "###" to separate each ingredient summary. Do not repeat the name of the ingredient within the summary. Do not write markdown formatting (bold, italics, etc. for any of the responses).
+    
+    Here is an example of the format:
+    Ingredient1: This is a summary of Ingredient1. It is used in...
+    ###
+    Ingredient2: This is a summary of Ingredient2. It helps with...
+    ###
+    Ingredient3: This is a summary of Ingredient3. Studies show that...
+    
+    Ingredients: \(ingredients)
     """
 
     // Prepare parameters for OpenAI API request
@@ -135,13 +139,10 @@ func getInfoAboutIngredients(ingredients: [String]) async -> [String]? {
                let choices = responseJson["choices"] as? [[String: Any]],
                let message = choices.first?["message"] as? [String: Any],
                let content = message["content"] as? String {
+                //print(content)
 
-                // Split the content using the unique delimiter '###'
-                let summaries = content.split(separator: "###").map { String($0).trimmingCharacters(in: .whitespacesAndNewlines) }
-                print(summaries)
-
-                // Return an array of summaries
-                return summaries
+                // Return the content of the ai message
+                return content
             }
         } else {
             print("Unexpected response status code: \((response as? HTTPURLResponse)?.statusCode ?? -1)")
@@ -155,8 +156,6 @@ func getInfoAboutIngredients(ingredients: [String]) async -> [String]? {
 }
 
 func getCancerScore(ingredients: [String]) async -> Int? {
-    print("Entered function for cancer score")
-    
     // Create a prompt that lists each ingredient and asks for a cancer score
     let ingredientsText = ingredients.joined(separator: ", ")
     let prompt = "Based on the following ingredients, please provide a single cancer score (1-100, with 100 being highly cancerous and 1 being not cancerous): \(ingredientsText). Make sure to output only a single integer which is the cancer score. Do not output any reasoning or anything else."
@@ -169,12 +168,9 @@ func getCancerScore(ingredients: [String]) async -> Int? {
                 "content": prompt
             ]
         ],
-        "return_citations": false
     ]
 
     do {
-        print("entered do statement")
-        
         let postData = try JSONSerialization.data(withJSONObject: parameters, options: [])
         let url = URL(string: "https://api.openai.com/v1/chat/completions")! // Updated endpoint
         var request = URLRequest(url: url)
@@ -194,7 +190,6 @@ func getCancerScore(ingredients: [String]) async -> Int? {
            let choices = responseJson["choices"] as? [[String: Any]],
            let message = choices.first?["message"] as? [String: Any],
            let content = message["content"] as? String {
-            
             print("Cancer score response: " + content.trimmingCharacters(in: .whitespacesAndNewlines))
             
             // Convert the response to an integer
@@ -211,4 +206,3 @@ func getCancerScore(ingredients: [String]) async -> Int? {
     
     return nil
 }
-

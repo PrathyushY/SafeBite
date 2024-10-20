@@ -18,9 +18,9 @@ final class Product {
     var ecoScore: Int
     var foodProcessingRating: String
     var timeScanned: Date
-    var aiGeneratedInfo: [String] = []
+    var aiGeneratedInfo: String = ""
     var imageURL: String
-    var calories: Int = -1
+    var calories: Int = 0
     var cancerScore: Int = -1
     
     init(
@@ -29,8 +29,8 @@ final class Product {
         quantity: String,
         ingredients: String,
         nutritionScore: Int,
-        ecoScore: Int, // Added ecoScore
-        foodProcessingRating: String, // Added foodProcessingRating
+        ecoScore: Int,
+        foodProcessingRating: String,
         imageURL: String,
         timeScanned: Date,
         calories: Int
@@ -49,11 +49,10 @@ final class Product {
     
     // Fetch AI-generated information for ingredients
     func fetchAIInfo() async {
-        let ingredientList = self.ingredients.split(separator: ",").map { String($0).trimmingCharacters(in: .whitespacesAndNewlines) }
-        if let generatedInfo = await getInfoAboutIngredients(ingredients: ingredientList) {
+        if let generatedInfo = await getInfoAboutIngredients(ingredients: ingredients) {
             aiGeneratedInfo = generatedInfo
         } else {
-            aiGeneratedInfo = [] // No info returned
+            aiGeneratedInfo = "N/A" // No info returned
         }
     }
     

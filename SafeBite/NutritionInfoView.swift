@@ -2,8 +2,10 @@ import SwiftUI
 
 struct NutritionInfoView: View {
     let product: Product
-    @State private var isLoading = true // Tracks whether AI info is loading
+    @State var isLoading = true // Tracks whether AI info is loading
     @State private var showInfoSheet = false // State to control modal visibility
+    @State private var ingredientNames: [String] = []
+    @State private var ingredientSummaries: [String] = []
     
     var body: some View {
         ZStack { // Use ZStack to layer the content and modal
@@ -15,10 +17,11 @@ struct NutritionInfoView: View {
                         nutritionScores
                             .padding(.top)
                         timeScanned
-                            .padding(3)
+                            .padding(.bottom, 3)
                         productDetails
                             .padding()
-                        ingredientSummary
+                        ingredientInfo
+                            .padding(.top)
                     }
                     .padding()
                     .frame(maxWidth: .infinity)
@@ -44,8 +47,8 @@ struct NutritionInfoView: View {
                 }
             }
             .onAppear {
-                loadAIInfo()
                 getCancerScore()
+                loadAIInfo()
             }
             .edgesIgnoringSafeArea(.top)
         }
@@ -118,15 +121,21 @@ struct NutritionInfoView: View {
     // Display the image if available
     private var productImage: some View {
         HStack { // Use HStack to align the image and info button horizontally
-            if let url = URL(string: product.imageURL) {
-                AsyncImage(url: url) { image in
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(maxWidth: 200, maxHeight: 200)
-                        .cornerRadius(10)
-                } placeholder: {
-                    ProgressView()
+            if product.imageURL != "N/A" {
+                if let url = URL(string: product.imageURL) {
+                    AsyncImage(url: url) { image in
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(maxWidth: 200, maxHeight: 200)
+                            .cornerRadius(10)
+                    } placeholder: {
+                        ProgressView()
+                    }
+                } else {
+                    Text("Image not available")
+                        .italic()
+                        .foregroundColor(.gray)
                 }
             } else {
                 Text("Image not available")
@@ -187,9 +196,8 @@ struct NutritionInfoView: View {
         .padding(.horizontal)
         .frame(maxWidth: .infinity, alignment: .center) // Center product details
     }
-    
-    // Summary Section with Table
-    private var ingredientSummary: some View {
+        
+    private var ingredientInfo: some View {
         VStack(alignment: .leading) {
             Text("Ingredients Overview")
                 .font(.headline)
@@ -199,44 +207,62 @@ struct NutritionInfoView: View {
             Divider()
             
             if isLoading {
-                ProgressView("Fetching AI-generated info...")
+                ProgressView("Fetching AI-generated info. This may take up to a minute.")
                     .padding()
-            } else if !product.aiGeneratedInfo.isEmpty {
-                let ingredients = product.ingredients.split(separator: ",").map { String($0).trimmingCharacters(in: .whitespacesAndNewlines) }
-                let summaries = product.aiGeneratedInfo
-                
-                ForEach(0..<ingredients.count, id: \.self) { index in
+            } else if !product.aiGeneratedInfo.isEmpty && product.aiGeneratedInfo != "N/A" {
+                ForEach(ingredientNames.indices, id: \.self) { index in
                     VStack(alignment: .leading) {
-                        Text(ingredients[index])
+                        Text(ingredientNames[index])
                             .font(.body)
                             .bold()
                             .foregroundColor(.red)
                             .padding(.bottom, 2)
                         
-                        // Safely access the summary if it exists
-                        if summaries.count != 0 {
-                            Text(summaries[index])
-                                .font(.body)
-                                .padding(.bottom, 10)
-                        } else {
-                            // Display a message if no summary is available
-                            Text("No AI-generated information available.")
-                                .font(.body)
-                                .foregroundColor(.gray)
-                                .padding(.bottom, 10)
-                        }
+                        Text(ingredientSummaries[index])
+                            .font(.body)
+                            .padding(.bottom, 10)
                     }
-                    //.padding()
-                    //.background(RoundedRectangle(cornerRadius: 10).stroke(Color.gray.opacity(0.5), lineWidth: 1))
                     Divider()
                 }
             } else {
-                Text("No AI-generated information available.")
+                Text("No AI-generated information available. This means that the AI has failed to generate a response, or that the ingredient information is not available yet. Please check back later for more content.")
                     .italic()
                     .foregroundColor(.gray)
             }
         }
         .padding(.horizontal)
+        .onChange(of: isLoading) {
+            parseAIInfo()
+        }
+    }
+    
+    private func parseAIInfo() {        
+        // Split the string by "###" to get the ingredient sections
+        let ingredientSections = product.aiGeneratedInfo.components(separatedBy: "###")
+
+        var names: [String] = []
+        var summaries: [String] = []
+        
+        for section in ingredientSections {
+            // Split each section by the colon to separate the name and summary
+            let components = section.trimmingCharacters(in: .whitespacesAndNewlines).components(separatedBy: ":")
+            
+            if components.count == 2 {
+                let name = components[0].trimmingCharacters(in: .whitespacesAndNewlines)
+                let summary = components[1].trimmingCharacters(in: .whitespacesAndNewlines)
+                
+                // Append the name and summary to their respective arrays
+                names.append(name)
+                summaries.append(summary)
+            }
+        }
+        
+        print("Ingredient names:  \(ingredientNames)")
+        print("Ingredient summaries: \(ingredientSummaries)")
+        
+        // Update the state with the parsed names and summaries
+        ingredientNames = names
+        ingredientSummaries = summaries
     }
     
     // Function to load AI info

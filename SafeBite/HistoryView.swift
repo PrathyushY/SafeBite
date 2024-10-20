@@ -22,19 +22,26 @@ struct HistoryView: View {
                                 NutritionInfoView(product: product)
                             } label: {
                                 Text(product.name)
-                                if let url = URL(string: product.imageURL) {
-                                    AsyncImage(url: url) { image in
-                                        image
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(maxWidth: 200, maxHeight: 200)
-                                            .cornerRadius(10)
-                                    } placeholder: {
-                                        ProgressView()
+                                if product.imageURL != "N/A" {
+                                    if let url = URL(string: product.imageURL) {
+                                        AsyncImage(url: url) { image in
+                                            image
+                                                .resizable()
+                                                .aspectRatio(contentMode: .fit)
+                                                .frame(maxWidth: 200, maxHeight: 200)
+                                                .cornerRadius(10)
+                                        } placeholder: {
+                                            ProgressView()
+                                        }
+                                    } else {
+                                        Text("Image not available")
+                                            .italic()
+                                            .foregroundColor(.gray)
                                     }
                                 } else {
                                     Text("Image not available")
                                         .italic()
+                                        .foregroundColor(.gray)
                                 }
                             }
                         }

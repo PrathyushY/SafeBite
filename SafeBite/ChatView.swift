@@ -192,7 +192,7 @@ struct ChatView: View {
             let aiChatMessage = ChatMessage(content: aiResponseText, sender: "ai")
             modelContext.insert(aiChatMessage)
         } else {
-            let aiChatMessage = ChatMessage(content: "Failed to generate summary.", sender: "ai")
+            let aiChatMessage = ChatMessage(content: "Failed to generate response.", sender: "ai")
             modelContext.insert(aiChatMessage)
         }
         

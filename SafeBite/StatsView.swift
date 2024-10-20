@@ -96,7 +96,7 @@ struct StatsView: View {
                 date: date,
                 totalCalories: groupedByDay[date]?.reduce(0.0) { (result: Double, product: Product) in
                     // Only add scores that are not -1
-                    result + (product.cancerScore != -1 ? Double(product.cancerScore) : 0.0)
+                    result + (product.calories != -1 ? Double(product.calories) : 0.0)
                 } ?? 0.0
             )
         }
