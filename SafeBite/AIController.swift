@@ -7,8 +7,6 @@
 
 import Foundation
 
-import Foundation
-
 private let apiKey = "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"
 
 func chatBasedOnHistory(message: String, products: [Product]) async -> String? {
@@ -156,12 +154,11 @@ func getInfoAboutIngredients(ingredients: String) async -> String? {
 }
 
 func getCancerScore(ingredients: [String]) async -> Int? {
-    // Create a prompt that lists each ingredient and asks for a cancer score
     let ingredientsText = ingredients.joined(separator: ", ")
     let prompt = "Based on the following ingredients, please provide a single cancer score (1-100, with 100 being highly cancerous and 1 being not cancerous): \(ingredientsText). Make sure to output only a single integer which is the cancer score. Do not output any reasoning or anything else."
 
     let parameters: [String: Any?] = [
-        "model": "gpt-4", // Use the correct model here
+        "model": "gpt-4",
         "messages": [
             [
                 "role": "user",
@@ -179,20 +176,18 @@ func getCancerScore(ingredients: [String]) async -> Int? {
         request.allHTTPHeaderFields = [
             "accept": "application/json",
             "content-type": "application/json",
-            "authorization": "Bearer \(apiKey)" // Use your actual API key
+            "authorization": "Bearer \(apiKey)"
         ]
         request.httpBody = postData
 
         let (data, _) = try await URLSession.shared.data(for: request)
 
-        // Parse the JSON response to extract the generated cancer score
         if let responseJson = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
            let choices = responseJson["choices"] as? [[String: Any]],
            let message = choices.first?["message"] as? [String: Any],
            let content = message["content"] as? String {
             print("Cancer score response: " + content.trimmingCharacters(in: .whitespacesAndNewlines))
             
-            // Convert the response to an integer
             if let cancerScore = Int(content.trimmingCharacters(in: .whitespacesAndNewlines)) {
                 return cancerScore
             } else {

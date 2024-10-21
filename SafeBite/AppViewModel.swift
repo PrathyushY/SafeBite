@@ -48,7 +48,7 @@ final class AppViewModel: ObservableObject {
                     
                     let foodProcessingRating: String = {
                         if let novaGroupsTags = productJson["nova_groups_tags"] as? [String], !novaGroupsTags.isEmpty {
-                            return novaGroupsTags[0] // Return the first item if available
+                            return novaGroupsTags[0]
                         }
                         return "N/A" // Default if no valid data is found
                     }()
@@ -57,7 +57,7 @@ final class AppViewModel: ObservableObject {
                     let calories: Int = {
                         if let nutriments = productJson["nutriments"] as? [String: Any],
                            let energyKcal = nutriments["energy-kcal"] as? Double {
-                            return Int(energyKcal) // Cast to Int since calories are usually whole numbers
+                            return Int(energyKcal)
                         }
                         return 0 // Default if no valid data is found
                     }()
@@ -68,10 +68,8 @@ final class AppViewModel: ObservableObject {
                         quantity: productJson["quantity"] as? String ?? "N/A",
                         ingredients: productJson["ingredients_text"] as? String ?? "N/A",
                         nutritionScore: productJson["nutriscore_score"] as? Int ?? 0,
-                        ecoScore: productJson["ecoscore_score"] as? Int ?? 0, // Assuming you might have this field
+                        ecoScore: productJson["ecoscore_score"] as? Int ?? 0,
                         foodProcessingRating: foodProcessingRating,
-                        //allergens: productJson["allergens"] as? [String] ?? [],
-                        //ingredientsAnalysis: productJson["ingredients_analysis"] as? String ?? "N/A",
                         imageURL: productJson["image_url"] as? String ?? "N/A",
                         timeScanned: Date(),
                         calories: calories
