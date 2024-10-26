@@ -35,7 +35,6 @@ struct ChatView: View {
                                                 }) {
                                                     Label("Copy", systemImage: "doc.on.doc")
                                                 }
-                                                // Regenerate response only for the last user message
                                                 if isLastUserMessage(message) {
                                                     Button(action: {
                                                         Task {

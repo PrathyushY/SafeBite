@@ -2,13 +2,13 @@ import SwiftUI
 
 struct NutritionInfoView: View {
     let product: Product
-    @State var isLoading = true // Tracks whether AI info is loading
-    @State private var showInfoSheet = false // State to control modal visibility
+    @State var isLoading = true
+    @State private var showInfoSheet = false
     @State private var ingredientNames: [String] = []
     @State private var ingredientSummaries: [String] = []
     
     var body: some View {
-        ZStack { // Use ZStack to layer the content and modal
+        ZStack {
             NavigationView {
                 ScrollView {
                     VStack(alignment: .center) {
@@ -43,7 +43,7 @@ struct NutritionInfoView: View {
                     }
                 }
                 .sheet(isPresented: $showInfoSheet) {
-                    InfoSheetView() // Present the new sheet view
+                    InfoSheetView()
                 }
             }
             .onAppear {
@@ -54,7 +54,6 @@ struct NutritionInfoView: View {
         }
     }
     
-    // Info Sheet View
     private struct InfoSheetView: View {
         var body: some View {
             NavigationView {
@@ -101,12 +100,10 @@ struct NutritionInfoView: View {
         }
     }
     
-    // Show information button action
     private func showInfo() {
         showInfoSheet = true
     }
     
-    // Product Information header
     private var productHeader: some View {
         Text(product.name)
             .font(.title)
@@ -117,8 +114,6 @@ struct NutritionInfoView: View {
             .frame(maxWidth: .infinity, alignment: .center) // Center the header
     }
     
-    // Display the image if available
-    // Display the image if available
     private var productImage: some View {
         HStack { // Use HStack to align the image and info button horizontally
             if product.imageURL != "N/A" {
@@ -146,7 +141,6 @@ struct NutritionInfoView: View {
         .frame(maxWidth: .infinity, alignment: .center) // Center the image and info button
     }
     
-    // Nutrition Score in Circular View
     private var nutritionScores: some View {
         VStack {
             HStack {
@@ -167,7 +161,6 @@ struct NutritionInfoView: View {
         .frame(maxWidth: .infinity) // Ensure the VStack takes full width
     }
     
-    // Time Scanned Section
     private var timeScanned: some View {
         HStack {
             Image(systemName: "clock")
@@ -181,7 +174,6 @@ struct NutritionInfoView: View {
         .frame(maxWidth: .infinity, alignment: .center) // Center time scanned section
     }
     
-    // Product details
     private var productDetails: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Name: \(product.name)")
@@ -265,7 +257,6 @@ struct NutritionInfoView: View {
         ingredientSummaries = summaries
     }
     
-    // Function to load AI info
     private func loadAIInfo() {
         Task {
             if product.aiGeneratedInfo.isEmpty {
@@ -315,7 +306,6 @@ struct ScoreCircleView: View {
                     .rotationEffect(.degrees(-90)) // Start from the top
                     .frame(width: radius, height: radius) // Updated size
                 
-                // Display the score in the center
                 Text("\(score)")
                     .font(.title)
                     .bold()
@@ -331,7 +321,6 @@ struct ScoreCircleView: View {
     }
 }
 
-// Preview the view
 #Preview {
     NutritionInfoView(product: Product(
         name: "Name",

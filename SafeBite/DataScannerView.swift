@@ -1,8 +1,8 @@
 //
 //  DataScannerView.swift
-//  BarcodeTextScanner
+//  SafeBite
 //
-//  Created by Prathyush Yeturi on 6/13/2024
+//  Created by Prathyush Yeturi on 8/10/24.
 //  Made with code written by Alfian Losari on 6/25/22.
 //
 

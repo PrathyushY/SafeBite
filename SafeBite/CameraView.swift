@@ -1,3 +1,11 @@
+//
+//  CameraView.swift
+//  SafeBite
+//
+//  Created by Prathyush Yeturi on 8/10/24.
+//  Made with code written by Alfian Losari on 6/25/22.
+//
+
 import SwiftUI
 import VisionKit
 
@@ -6,9 +14,9 @@ struct CameraView: View {
     @Environment(\.modelContext) private var modelContext
     
     @State private var productInfoView: NutritionInfoView? = nil
-    @State private var scanningPaused = false // State to control scanning
-    @State private var showAlert = false // State to control alert presentation
-    @State private var alertMessage = "" // Message for the alert
+    @State private var scanningPaused = false
+    @State private var showAlert = false
+    @State private var alertMessage = ""
 
     var body: some View {
         NavigationView {
@@ -30,7 +38,6 @@ struct CameraView: View {
                 await vm.requestDataScannerAccessStatus()
             }
             .toolbar {
-                // Add an info button to the top-right of the toolbar
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: showInfo) {
                         Image(systemName: "info.circle")
@@ -39,7 +46,6 @@ struct CameraView: View {
                 }
             }
             .sheet(isPresented: $vm.showNutritionInfo, onDismiss: {
-                // Resume scanning when the sheet is dismissed
                 scanningPaused = false
             }) {
                 if let productInfoView = productInfoView {
@@ -57,14 +63,13 @@ struct CameraView: View {
         }
     }
     
-    // Main view with the scanner
     private var mainView: some View {
         ZStack {
             if !scanningPaused {
                 DataScannerView(
                     recognizedItems: $vm.recognizedItems,
-                    recognizedDataType: .barcode(), // Only allow barcode scanning
-                    recognizesMultipleItems: false, // Disable multiple item recognition
+                    recognizedDataType: .barcode(),
+                    recognizesMultipleItems: false,
                     onScan: { result in
                         handleScan(result)
                     }
@@ -80,13 +85,12 @@ struct CameraView: View {
         }
     }
 
-    // Handle barcode scan results
     private func handleScan(_ result: [RecognizedItem]) {
-        guard !scanningPaused else { return } // Ensure we stop scanning once a barcode is detected
+        guard !scanningPaused else { return }
         
         for item in result {
             if case let .barcode(barcode) = item {
-                scanningPaused = true // Pause scanning after barcode is detected
+                scanningPaused = true
 
                 vm.fetchProductInfo(barcode: barcode.payloadStringValue ?? "", modelContext: modelContext) { newProduct in
                     if let product = newProduct {
@@ -101,11 +105,10 @@ struct CameraView: View {
                             }
                         }
                     } else {
-                        // Product not found, show alert
                         DispatchQueue.main.async {
                             self.alertMessage = "No product information could be found for the scanned barcode."
                             self.showAlert = true
-                            scanningPaused = false // Resume scanning
+                            scanningPaused = false
                         }
                     }
                 }
@@ -113,10 +116,8 @@ struct CameraView: View {
             }
         }
     }
-
-    // Show information button action
+    
     private func showInfo() {
-        // Set the alert message and show the alert
         alertMessage = "To get an accurate scan, making sure the barcode is fully exposed and you are in good lighting conditions. Try not to shake the camera too much as well."
         showAlert = true
     }

@@ -107,7 +107,7 @@ func getInfoAboutIngredients(ingredients: String) async -> String? {
 
     // Prepare parameters for OpenAI API request
     let parameters: [String: Any] = [
-        "model": "gpt-4",  // You can also use "gpt-3.5-turbo"
+        "model": "gpt-4",
         "messages": [
             [
                 "role": "user",
@@ -124,7 +124,7 @@ func getInfoAboutIngredients(ingredients: String) async -> String? {
         request.httpMethod = "POST"
         request.timeoutInterval = 60
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue("Bearer  \(apiKey)", forHTTPHeaderField: "Authorization")  // Replace with your OpenAI API key
+        request.addValue("Bearer  \(apiKey)", forHTTPHeaderField: "Authorization")
         request.httpBody = postData
 
         // Perform the API request
