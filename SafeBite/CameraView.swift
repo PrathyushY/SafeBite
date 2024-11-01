@@ -49,8 +49,22 @@ struct CameraView: View {
                 scanningPaused = false
             }) {
                 if let productInfoView = productInfoView {
-                    productInfoView
-                        .presentationDragIndicator(.visible)
+                    NavigationView {
+                        productInfoView
+                    }
+                    .presentationDragIndicator(.visible)
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbar {
+                        ToolbarItem(placement: .principal) {
+                            Text("Product Info")
+                                .font(.headline)
+                        }
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Button(action: showInfo) {
+                                Image(systemName: "info.circle")
+                            }
+                        }
+                    }
                 }
             }
             .alert(isPresented: $showAlert) {

@@ -7,7 +7,7 @@
 
 import Foundation
 
-private let apiKey = ""
+private let apiKey = "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"
 
 func chatBasedOnHistory(message: String, products: [Product]) async -> String? {
     // Convert products to a JSON-compatible dictionary or array

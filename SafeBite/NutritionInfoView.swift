@@ -9,49 +9,44 @@ struct NutritionInfoView: View {
     
     var body: some View {
         ZStack {
-            NavigationView {
-                ScrollView {
-                    VStack(alignment: .center) {
-                        productHeader
-                        productImage
-                        nutritionScores
-                            .padding(.top)
-                        timeScanned
-                            .padding(.bottom, 3)
-                        productDetails
-                            .padding()
-                        ingredientInfo
-                            .padding(.top)
-                    }
-                    .padding()
-                    .frame(maxWidth: .infinity)
+            ScrollView {
+                VStack(alignment: .center) {
+                    productHeader
+                    productImage
+                    nutritionScores
+                        .padding(.top)
+                    timeScanned
+                        .padding(.bottom, 3)
+                    productDetails
+                        .padding()
+                    ingredientInfo
+                        .padding(.top)
                 }
-                .padding(.top, -75)
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .principal) {
-                        Text("Product Info")
-                            .font(.headline)
-                            .offset(y: -0)
-                    }
+                .padding()
+                .frame(maxWidth: .infinity)
+            }
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text("Product Info")
+                        .font(.headline)
+                        .offset(y: -0)
                 }
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button(action: showInfo) {
-                            Image(systemName: "info.circle")
-                        }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: showInfo) {
+                        Image(systemName: "info.circle")
                     }
-                }
-                .sheet(isPresented: $showInfoSheet) {
-                    InfoSheetView()
                 }
             }
-            .onAppear {
-                getCancerScore()
-                loadAIInfo()
+            .sheet(isPresented: $showInfoSheet) {
+                InfoSheetView()
             }
-            .edgesIgnoringSafeArea(.top)
         }
+        .onAppear {
+            getCancerScore()
+            loadAIInfo()
+        }
+        .edgesIgnoringSafeArea(.top)
     }
     
     private struct InfoSheetView: View {
@@ -188,7 +183,7 @@ struct NutritionInfoView: View {
         .padding(.horizontal)
         .frame(maxWidth: .infinity, alignment: .center) // Center product details
     }
-        
+    
     private var ingredientInfo: some View {
         VStack(alignment: .leading) {
             Text("Ingredients Overview")
@@ -228,10 +223,10 @@ struct NutritionInfoView: View {
         }
     }
     
-    private func parseAIInfo() {        
+    private func parseAIInfo() {
         // Split the string by "###" to get the ingredient sections
         let ingredientSections = product.aiGeneratedInfo.components(separatedBy: "###")
-
+        
         var names: [String] = []
         var summaries: [String] = []
         
@@ -259,9 +254,9 @@ struct NutritionInfoView: View {
     
     private func loadAIInfo() {
         Task {
-            if product.aiGeneratedInfo.isEmpty {
+            if product.aiGeneratedInfo == "" {
                 isLoading = true
-                await product.fetchAIInfo() // Ensure this method is implemented in your Product model
+                await product.fetchAIInfo()
                 isLoading = false
             } else {
                 isLoading = false
@@ -297,14 +292,14 @@ struct ScoreCircleView: View {
                 // Background circle (gray outline)
                 Circle()
                     .stroke(Color.gray.opacity(0.3), lineWidth: 15)
-                    .frame(width: radius, height: radius) // Updated size
+                    .frame(width: radius, height: radius)
                 
                 // Foreground circle representing the score (red outline)
                 Circle()
                     .trim(from: 0, to: CGFloat(score) / 100)
                     .stroke(Color.red, lineWidth: 15)
-                    .rotationEffect(.degrees(-90)) // Start from the top
-                    .frame(width: radius, height: radius) // Updated size
+                    .rotationEffect(.degrees(-90))
+                    .frame(width: radius, height: radius)
                 
                 Text("\(score)")
                     .font(.title)
@@ -316,7 +311,7 @@ struct ScoreCircleView: View {
                 .font(.body)
                 .bold()
                 .foregroundColor(.gray)
-                .padding(.top, 5) // Added padding
+                .padding(.top, 5)
         }
     }
 }
