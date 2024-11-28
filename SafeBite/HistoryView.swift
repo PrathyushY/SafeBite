@@ -109,7 +109,7 @@ struct HistoryView: View {
                 foodProcessingRating: "Minimal Processing",
                 imageURL: "https://example.com/apple.jpg",
                 timeScanned: Calendar.current.date(byAdding: .day, value: -1, to: Date())!,
-                calories: 150
+                calories: 500
             ),
             Product(
                 name: "Banana",
@@ -121,7 +121,7 @@ struct HistoryView: View {
                 foodProcessingRating: "Minimal Processing",
                 imageURL: "https://example.com/banana.jpg",
                 timeScanned: Calendar.current.date(byAdding: .day, value: -2, to: Date())!,
-                calories: 150
+                calories: 400
             ),
             Product(
                 name: "Banana",
@@ -132,8 +132,8 @@ struct HistoryView: View {
                 ecoScore: 5,
                 foodProcessingRating: "Minimal Processing",
                 imageURL: "https://example.com/banana.jpg",
-                timeScanned: Calendar.current.date(byAdding: .day, value: -2, to: Date())!,
-                calories: 150
+                timeScanned: Calendar.current.date(byAdding: .day, value: -3, to: Date())!,
+                calories: 650
             ),
             Product(
                 name: "Banana",
@@ -144,8 +144,8 @@ struct HistoryView: View {
                 ecoScore: 5,
                 foodProcessingRating: "Minimal Processing",
                 imageURL: "https://example.com/banana.jpg",
-                timeScanned: Calendar.current.date(byAdding: .day, value: -2, to: Date())!,
-                calories: 150
+                timeScanned: Calendar.current.date(byAdding: .day, value: -4, to: Date())!,
+                calories: 550
             ),
             Product(
                 name: "Banana",
@@ -156,8 +156,8 @@ struct HistoryView: View {
                 ecoScore: 5,
                 foodProcessingRating: "Minimal Processing",
                 imageURL: "https://example.com/banana.jpg",
-                timeScanned: Calendar.current.date(byAdding: .day, value: -2, to: Date())!,
-                calories: 150
+                timeScanned: Calendar.current.date(byAdding: .day, value: -5, to: Date())!,
+                calories: 250
             ),
             Product(
                 name: "Banana",
@@ -168,8 +168,8 @@ struct HistoryView: View {
                 ecoScore: 5,
                 foodProcessingRating: "Minimal Processing",
                 imageURL: "https://example.com/banana.jpg",
-                timeScanned: Calendar.current.date(byAdding: .day, value: -2, to: Date())!,
-                calories: 150
+                timeScanned: Calendar.current.date(byAdding: .day, value: -6, to: Date())!,
+                calories: 250
             ),
             Product(
                 name: "Banana",
@@ -180,8 +180,8 @@ struct HistoryView: View {
                 ecoScore: 5,
                 foodProcessingRating: "Minimal Processing",
                 imageURL: "https://example.com/banana.jpg",
-                timeScanned: Calendar.current.date(byAdding: .day, value: -2, to: Date())!,
-                calories: 150
+                timeScanned: Calendar.current.date(byAdding: .day, value: -7, to: Date())!,
+                calories: 300
             ),
         ]
         

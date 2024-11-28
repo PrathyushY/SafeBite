@@ -119,7 +119,7 @@ struct StatsView: View {
                             }
                             .padding(.bottom, 4)
                             
-                            Text("Displays the total cancer score for each day over the last 7 days. (For this one, the lower the better!)")
+                            Text("Displays the total cancer score for each day over the last 7 days.")
                                 .font(.subheadline)
                                 .multilineTextAlignment(.center)
                                 .padding([.leading, .trailing, .bottom])

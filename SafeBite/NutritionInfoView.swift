@@ -212,7 +212,7 @@ struct NutritionInfoView: View {
                     Divider()
                 }
             } else {
-                Text("No AI-generated information available. This means that the AI has failed to generate a response, or that the ingredient information is not available yet. Please check back later for more content.")
+                Text("No AI-generated information available. This means that the AI has failed to generate a response, or that the ingredient information is not available yet or is not available in English. Please check back later.")
                     .italic()
                     .foregroundColor(.gray)
             }

@@ -49,14 +49,14 @@
 		7D203CD12C6D814D000F830E /* NutritionInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutritionInfoView.swift; sourceTree = "<group>"; };
 		7D203CD32C6D8F85000F830E /* DataScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataScannerView.swift; sourceTree = "<group>"; };
 		7D26B0532C685A3100BB3814 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		7D775DF02C67C876004E4C7F /* SafeBite.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SafeBite.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7D775DF02C67C876004E4C7F /* SafeBite - Know What You Eat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SafeBite - Know What You Eat.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D775DF32C67C876004E4C7F /* SafeBiteApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafeBiteApp.swift; sourceTree = "<group>"; };
 		7D775DF52C67C876004E4C7F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		7D775DF92C67C877004E4C7F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7D775DFC2C67C877004E4C7F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		7D775E022C67C877004E4C7F /* SafeBiteTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SafeBiteTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		7D775E022C67C877004E4C7F /* SafeBite - Know What You EatTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SafeBite - Know What You EatTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D775E062C67C877004E4C7F /* SafeBiteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafeBiteTests.swift; sourceTree = "<group>"; };
-		7D775E0C2C67C877004E4C7F /* SafeBiteUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SafeBiteUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		7D775E0C2C67C877004E4C7F /* SafeBite - Know What You EatUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SafeBite - Know What You EatUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D775E102C67C877004E4C7F /* SafeBiteUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafeBiteUITests.swift; sourceTree = "<group>"; };
 		7D775E122C67C877004E4C7F /* SafeBiteUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafeBiteUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		7D775E212C67CA39004E4C7F /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
@@ -116,9 +116,9 @@
 		7D775DF12C67C876004E4C7F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				7D775DF02C67C876004E4C7F /* SafeBite.app */,
-				7D775E022C67C877004E4C7F /* SafeBiteTests.xctest */,
-				7D775E0C2C67C877004E4C7F /* SafeBiteUITests.xctest */,
+				7D775DF02C67C876004E4C7F /* SafeBite - Know What You Eat.app */,
+				7D775E022C67C877004E4C7F /* SafeBite - Know What You EatTests.xctest */,
+				7D775E0C2C67C877004E4C7F /* SafeBite - Know What You EatUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -173,9 +173,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		7D775DEF2C67C876004E4C7F /* SafeBite */ = {
+		7D775DEF2C67C876004E4C7F /* SafeBite - Know What You Eat */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 7D775E162C67C877004E4C7F /* Build configuration list for PBXNativeTarget "SafeBite" */;
+			buildConfigurationList = 7D775E162C67C877004E4C7F /* Build configuration list for PBXNativeTarget "SafeBite - Know What You Eat" */;
 			buildPhases = (
 				7D775DEC2C67C876004E4C7F /* Sources */,
 				7D775DED2C67C876004E4C7F /* Frameworks */,
@@ -185,16 +185,16 @@
 			);
 			dependencies = (
 			);
-			name = SafeBite;
+			name = "SafeBite - Know What You Eat";
 			packageProductDependencies = (
 			);
 			productName = CancerDetector;
-			productReference = 7D775DF02C67C876004E4C7F /* SafeBite.app */;
+			productReference = 7D775DF02C67C876004E4C7F /* SafeBite - Know What You Eat.app */;
 			productType = "com.apple.product-type.application";
 		};
-		7D775E012C67C877004E4C7F /* SafeBiteTests */ = {
+		7D775E012C67C877004E4C7F /* SafeBite - Know What You EatTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 7D775E192C67C877004E4C7F /* Build configuration list for PBXNativeTarget "SafeBiteTests" */;
+			buildConfigurationList = 7D775E192C67C877004E4C7F /* Build configuration list for PBXNativeTarget "SafeBite - Know What You EatTests" */;
 			buildPhases = (
 				7D775DFE2C67C877004E4C7F /* Sources */,
 				7D775DFF2C67C877004E4C7F /* Frameworks */,
@@ -205,14 +205,14 @@
 			dependencies = (
 				7D775E042C67C877004E4C7F /* PBXTargetDependency */,
 			);
-			name = SafeBiteTests;
+			name = "SafeBite - Know What You EatTests";
 			productName = CancerDetectorTests;
-			productReference = 7D775E022C67C877004E4C7F /* SafeBiteTests.xctest */;
+			productReference = 7D775E022C67C877004E4C7F /* SafeBite - Know What You EatTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		7D775E0B2C67C877004E4C7F /* SafeBiteUITests */ = {
+		7D775E0B2C67C877004E4C7F /* SafeBite - Know What You EatUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 7D775E1C2C67C877004E4C7F /* Build configuration list for PBXNativeTarget "SafeBiteUITests" */;
+			buildConfigurationList = 7D775E1C2C67C877004E4C7F /* Build configuration list for PBXNativeTarget "SafeBite - Know What You EatUITests" */;
 			buildPhases = (
 				7D775E082C67C877004E4C7F /* Sources */,
 				7D775E092C67C877004E4C7F /* Frameworks */,
@@ -223,9 +223,9 @@
 			dependencies = (
 				7D775E0E2C67C877004E4C7F /* PBXTargetDependency */,
 			);
-			name = SafeBiteUITests;
+			name = "SafeBite - Know What You EatUITests";
 			productName = CancerDetectorUITests;
-			productReference = 7D775E0C2C67C877004E4C7F /* SafeBiteUITests.xctest */;
+			productReference = 7D775E0C2C67C877004E4C7F /* SafeBite - Know What You EatUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -251,7 +251,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 7D775DEB2C67C876004E4C7F /* Build configuration list for PBXProject "SafeBite" */;
+			buildConfigurationList = 7D775DEB2C67C876004E4C7F /* Build configuration list for PBXProject "SafeBite - Know What You Eat" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -266,9 +266,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				7D775DEF2C67C876004E4C7F /* SafeBite */,
-				7D775E012C67C877004E4C7F /* SafeBiteTests */,
-				7D775E0B2C67C877004E4C7F /* SafeBiteUITests */,
+				7D775DEF2C67C876004E4C7F /* SafeBite - Know What You Eat */,
+				7D775E012C67C877004E4C7F /* SafeBite - Know What You EatTests */,
+				7D775E0B2C67C877004E4C7F /* SafeBite - Know What You EatUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -342,12 +342,12 @@
 /* Begin PBXTargetDependency section */
 		7D775E042C67C877004E4C7F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 7D775DEF2C67C876004E4C7F /* SafeBite */;
+			target = 7D775DEF2C67C876004E4C7F /* SafeBite - Know What You Eat */;
 			targetProxy = 7D775E032C67C877004E4C7F /* PBXContainerItemProxy */;
 		};
 		7D775E0E2C67C877004E4C7F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 7D775DEF2C67C876004E4C7F /* SafeBite */;
+			target = 7D775DEF2C67C876004E4C7F /* SafeBite - Know What You Eat */;
 			targetProxy = 7D775E0D2C67C877004E4C7F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -480,7 +480,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"SafeBite/Preview Content\"";
-				DEVELOPMENT_TEAM = 6M5G65WA8T;
+				DEVELOPMENT_TEAM = GS2JM45644;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SafeBite/Info.plist;
@@ -519,7 +519,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"SafeBite/Preview Content\"";
-				DEVELOPMENT_TEAM = 6M5G65WA8T;
+				DEVELOPMENT_TEAM = GS2JM45644;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SafeBite/Info.plist;
@@ -564,7 +564,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SafeBite.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SafeBite";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SafeBite - Know What You Eat.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SafeBite - Know What You Eat";
 			};
 			name = Debug;
 		};
@@ -582,7 +582,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SafeBite.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SafeBite";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SafeBite - Know What You Eat.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SafeBite - Know What You Eat";
 			};
 			name = Release;
 		};
@@ -621,7 +621,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		7D775DEB2C67C876004E4C7F /* Build configuration list for PBXProject "SafeBite" */ = {
+		7D775DEB2C67C876004E4C7F /* Build configuration list for PBXProject "SafeBite - Know What You Eat" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7D775E142C67C877004E4C7F /* Debug */,
@@ -630,7 +630,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		7D775E162C67C877004E4C7F /* Build configuration list for PBXNativeTarget "SafeBite" */ = {
+		7D775E162C67C877004E4C7F /* Build configuration list for PBXNativeTarget "SafeBite - Know What You Eat" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7D775E172C67C877004E4C7F /* Debug */,
@@ -639,7 +639,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		7D775E192C67C877004E4C7F /* Build configuration list for PBXNativeTarget "SafeBiteTests" */ = {
+		7D775E192C67C877004E4C7F /* Build configuration list for PBXNativeTarget "SafeBite - Know What You EatTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7D775E1A2C67C877004E4C7F /* Debug */,
@@ -648,7 +648,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		7D775E1C2C67C877004E4C7F /* Build configuration list for PBXNativeTarget "SafeBiteUITests" */ = {
+		7D775E1C2C67C877004E4C7F /* Build configuration list for PBXNativeTarget "SafeBite - Know What You EatUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7D775E1D2C67C877004E4C7F /* Debug */,

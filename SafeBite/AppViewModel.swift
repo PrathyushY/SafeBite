@@ -69,7 +69,7 @@ final class AppViewModel: ObservableObject {
                         }
                         return 0 // Default if no valid data is found
                     }()
-
+                    
                     let newProduct = Product(
                         name: productJson["product_name"] as? String ?? "N/A",
                         brand: productJson["brands"] as? String ?? "N/A",
@@ -82,6 +82,8 @@ final class AppViewModel: ObservableObject {
                         timeScanned: Date(),
                         calories: calories
                     )
+                    
+                    print("Ingredients: \(newProduct.ingredients)")
                     
                     DispatchQueue.main.async {
                         self.showNutritionInfo = true

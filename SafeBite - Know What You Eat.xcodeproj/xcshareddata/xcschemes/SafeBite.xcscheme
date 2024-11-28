@@ -16,9 +16,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "7D775DEF2C67C876004E4C7F"
-               BuildableName = "SafeBite.app"
-               BlueprintName = "SafeBite"
-               ReferencedContainer = "container:SafeBite.xcodeproj">
+               BuildableName = "SafeBite - Know What You Eat.app"
+               BlueprintName = "SafeBite - Know What You Eat"
+               ReferencedContainer = "container:SafeBite - Know What You Eat.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -36,9 +36,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "7D775E012C67C877004E4C7F"
-               BuildableName = "SafeBiteTests.xctest"
-               BlueprintName = "SafeBiteTests"
-               ReferencedContainer = "container:SafeBite.xcodeproj">
+               BuildableName = "SafeBite - Know What You EatTests.xctest"
+               BlueprintName = "SafeBite - Know What You EatTests"
+               ReferencedContainer = "container:SafeBite - Know What You Eat.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference
@@ -47,9 +47,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "7D775E0B2C67C877004E4C7F"
-               BuildableName = "SafeBiteUITests.xctest"
-               BlueprintName = "SafeBiteUITests"
-               ReferencedContainer = "container:SafeBite.xcodeproj">
+               BuildableName = "SafeBite - Know What You EatUITests.xctest"
+               BlueprintName = "SafeBite - Know What You EatUITests"
+               ReferencedContainer = "container:SafeBite - Know What You Eat.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -69,9 +69,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "7D775DEF2C67C876004E4C7F"
-            BuildableName = "SafeBite.app"
-            BlueprintName = "SafeBite"
-            ReferencedContainer = "container:SafeBite.xcodeproj">
+            BuildableName = "SafeBite - Know What You Eat.app"
+            BlueprintName = "SafeBite - Know What You Eat"
+            ReferencedContainer = "container:SafeBite - Know What You Eat.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -86,9 +86,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "7D775DEF2C67C876004E4C7F"
-            BuildableName = "SafeBite.app"
-            BlueprintName = "SafeBite"
-            ReferencedContainer = "container:SafeBite.xcodeproj">
+            BuildableName = "SafeBite - Know What You Eat.app"
+            BlueprintName = "SafeBite - Know What You Eat"
+            ReferencedContainer = "container:SafeBite - Know What You Eat.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
