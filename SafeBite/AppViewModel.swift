@@ -74,7 +74,7 @@ final class AppViewModel: ObservableObject {
                         name: productJson["product_name"] as? String ?? "N/A",
                         brand: productJson["brands"] as? String ?? "N/A",
                         quantity: productJson["quantity"] as? String ?? "N/A",
-                        ingredients: productJson["ingredients_text"] as? String ?? "N/A",
+                        ingredients: productJson["ingredients_text_en"] as? String ?? "N/A",
                         nutritionScore: productJson["nutriscore_score"] as? Int ?? 0,
                         ecoScore: productJson["ecoscore_score"] as? Int ?? 0,
                         foodProcessingRating: foodProcessingRating,
