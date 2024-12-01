@@ -7,7 +7,13 @@
 
 import Foundation
 
-private let apiKey = ""
+private let encryptedText = """
+1XERmTijXL2YG4WHKo0GlgmECrwqUlSqG/9RsjVIgLNzwvfJIi8qEZPm+VGQUeN6R/X3Xfd9f0oKiBH9leX062zxfN3BmYN63ikwQImKiFzipK+0738pAUIKXBGr8CcZXgMekNqGvb4IRf45W4Ns5kpvhe/3tjwyGhETKLVdivIcZJp6Vy7+CpG5TSDI3m7uKIDOs4aDMHk2U3XGxrs2bqvpmihQI+E4YiZ816nNUmg=
+"""
+private let secretKey = "zoNfTQapPzWHHIDt"
+private let iv = "9lYRYAXAC3EmfioF"
+
+private let apiKey = decryptAPIKey(encryptedText: encryptedText, secretKey: secretKey, iv: iv)
 
 func chatBasedOnHistory(message: String, products: [Product]) async -> String? {
     // Convert products to a JSON-compatible dictionary or array
