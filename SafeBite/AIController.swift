@@ -8,7 +8,7 @@
 import Foundation
 
 private let encryptedText = """
-1XERmTijXL2YG4WHKo0GlgmECrwqUlSqG/9RsjVIgLNzwvfJIi8qEZPm+VGQUeN6R/X3Xfd9f0oKiBH9leX062zxfN3BmYN63ikwQImKiFzipK+0738pAUIKXBGr8CcZXgMekNqGvb4IRf45W4Ns5kpvhe/3tjwyGhETKLVdivIcZJp6Vy7+CpG5TSDI3m7uKIDOs4aDMHk2U3XGxrs2bqvpmihQI+E4YiZ816nNUmg=
+dEi28vKzvSBBdi60+E93rQGp724/y+qkoWyBZ88MF/T+hk7gibx3af6oEhwC4X+iUHYVzOcjy8dGDE+mGHbNZtnP9ctP3RD3cs5CIeaqUXSgcnPDvOm1Fe/bRCyq2sO4RzLNAFPzIs4TJrbgtRdteS23LWhLGMuUGvGXgbMvxZKP550OpIM+i9HvhpU2iDQlo5z1DuMVR+m9lO1rlAf3duFwf1BQrQ2QZ3+n5ZZyN+I=
 """
 private let secretKey = "zoNfTQapPzWHHIDt"
 private let iv = "9lYRYAXAC3EmfioF"
@@ -70,7 +70,7 @@ func chatBasedOnHistory(message: String, products: [Product]) async -> String? {
         request.httpMethod = "POST"
         request.timeoutInterval = 30
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
+        request.addValue("Bearer \(apiKey ?? "N/A")", forHTTPHeaderField: "Authorization")
         request.httpBody = postData
         
         // Perform the API request
@@ -130,7 +130,7 @@ func getInfoAboutIngredients(ingredients: String) async -> String? {
         request.httpMethod = "POST"
         request.timeoutInterval = 60
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue("Bearer  \(apiKey)", forHTTPHeaderField: "Authorization")
+        request.addValue("Bearer  \(apiKey ?? "N/A")", forHTTPHeaderField: "Authorization")
         request.httpBody = postData
 
         // Perform the API request
@@ -182,7 +182,7 @@ func getCancerScore(ingredients: [String]) async -> Int? {
         request.allHTTPHeaderFields = [
             "accept": "application/json",
             "content-type": "application/json",
-            "authorization": "Bearer \(apiKey)"
+            "authorization": "Bearer \(apiKey ?? "N/A")"
         ]
         request.httpBody = postData
 
